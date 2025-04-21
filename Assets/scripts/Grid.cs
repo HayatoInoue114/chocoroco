@@ -1,7 +1,10 @@
 using UnityEngine;
 
+
 public class Grid : MonoBehaviour
 {
+    
+
     // シングルトンインスタンス
     public static Grid Instance { get; private set; }
     // グリッドの幅と高さ
@@ -10,6 +13,27 @@ public class Grid : MonoBehaviour
     // グリッドを格納する2次元配列
     public static Transform[,] grid;
     private const float lineOffset = -0.5f;
+
+    public GameObject cubeBlock;
+
+    private void Start()
+    {
+        // 横一列
+        for (int i = 0; i < width; ++i)
+        {
+            Instantiate(cubeBlock, new Vector3(i, -1.0f, 0), Quaternion.identity);
+        }
+        // 縦一列(左)
+        for (int i = 0; i < height; ++i)
+        {
+            Instantiate(cubeBlock, new Vector3(-1.0f, i - 1.0f, 0), Quaternion.identity);
+        }
+        // 縦一列(右)
+        for (int i = 0; i < height; ++i)
+        {
+            Instantiate(cubeBlock, new Vector3(width, i - 1.0f, 0), Quaternion.identity);
+        }
+    }
 
     private void Awake()
     {
@@ -115,4 +139,5 @@ public class Grid : MonoBehaviour
         // 下境界線
         Gizmos.DrawLine(new Vector3(lineOffset, lineOffset, 0), new Vector3(width + lineOffset, lineOffset, 0));
     }
+   
 }
