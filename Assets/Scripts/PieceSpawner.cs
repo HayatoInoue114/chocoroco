@@ -1,7 +1,11 @@
 using UnityEngine;
 
+/// <summary>
+/// 指定ブロックのなんやかんやを管理
+/// </summary>
 public class PieceSpawner : MonoBehaviour
 {
+
 	public GameObject[] piecePrefabs;
 
 	public void SpawnLine()
