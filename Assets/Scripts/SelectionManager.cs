@@ -2,10 +2,15 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+/// <summary>
+/// マウスでブロックをなぞった時の処理を担当
+/// </summary>
+
 public class SelectionManager : MonoBehaviour
 {
 	private List<Block> selectedList = new List<Block>();
 	public HashSet<Block> selectedSet = new HashSet<Block>();
+	// クリック中か
 	public bool isSelecting = false;
 
 	// Update is called once per frame
@@ -44,7 +49,9 @@ public class SelectionManager : MonoBehaviour
 		}
 	}
 
-	// 隣接しているか
+	/// <summary>
+	/// 隣接しているか 
+	/// </summary>
 	bool IsNeighbor(Block a, Block b)
 	{
 		Vector2Int pa = a.GridPosition; // 例：マス目の位置 (x,y)
@@ -54,7 +61,9 @@ public class SelectionManager : MonoBehaviour
 		return (Mathf.Abs(delta.x) + Mathf.Abs(delta.y)) == 1;
 	}
 
-	// ひとつ前のブロックに戻ったか
+	/// <summary>
+	/// ひとつ前のブロックに戻ったか
+	/// </summary>
 	bool IsBacktrack(Block block)
 	{
 		if (selectedList.Count < 2)
@@ -62,9 +71,12 @@ public class SelectionManager : MonoBehaviour
 		return selectedList[selectedList.Count - 2] == block;
 	}
 
-	// ブロックを選択できるか
+	/// <summary>
+	/// ブロックを選択できるか
+	/// </summary>
 	void TrySelect(Block target)
 	{
+		// 手戻りが発生するか調べる
 		if (selectedSet.Contains(target))
 		{
 			if (IsBacktrack(target))
@@ -79,7 +91,7 @@ public class SelectionManager : MonoBehaviour
 			// それ以外のすでに選ばれたブロックは無視
 			return;
 		}
-
+		// 隣接してるか調べる
 		if (selectedList.Count > 0)
 		{
 			Block last = selectedList[selectedList.Count - 1];
@@ -101,12 +113,14 @@ public class SelectionManager : MonoBehaviour
 		// ここで形と一致するかチェックして消すなどの処理
 		// 例: MatchesPattern(selectedBlocks)
 
+		// 確定したのでループ
 		foreach (Block b in selectedSet)
 		{
 			// リセット（ここは条件によって消したりも可）
 			b.Decision();
 		}
 
+		// リスト消去
 		selectedSet.Clear();
 		selectedList.Clear();
 	}

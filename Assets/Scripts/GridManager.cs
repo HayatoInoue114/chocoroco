@@ -1,6 +1,10 @@
 using Unity.VisualScripting;
 using UnityEngine;
 
+
+/// <summary>
+/// マップやブロックを管理
+/// </summary>
 public class GridManager : MonoBehaviour
 {
 	// マップ管理

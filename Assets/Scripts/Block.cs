@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+/// ブロック自体の管理
+/// </summary>
 public class Block : MonoBehaviour
 {
 	// ブロックのマス位置を設定
@@ -24,6 +27,7 @@ public class Block : MonoBehaviour
     // 選択確定
 	public void Decision()
 	{
+        // 色変えたり演出させる
 		GetComponent<Renderer>().material.color = Color.red;
 		Destroy(gameObject,0.5f);
 	}
