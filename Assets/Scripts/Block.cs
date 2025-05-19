@@ -20,4 +20,11 @@ public class Block : MonoBehaviour
         GetComponent<Renderer>().material.color = Color.white;
         Debug.Log("選択中：" + GridPosition + "を選択解除");
 	}
+
+    // 選択確定
+	public void Decision()
+	{
+		GetComponent<Renderer>().material.color = Color.red;
+		Destroy(gameObject,0.5f);
+	}
 }
