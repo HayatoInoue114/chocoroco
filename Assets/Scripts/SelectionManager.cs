@@ -104,7 +104,7 @@ public class SelectionManager : MonoBehaviour
 		foreach (Block b in selectedSet)
 		{
 			// リセット（ここは条件によって消したりも可）
-			b.GetComponent<Renderer>().material.color = Color.white;
+			b.Decision();
 		}
 
 		selectedSet.Clear();
