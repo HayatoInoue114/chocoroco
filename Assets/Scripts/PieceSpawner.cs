@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class T_PieceSpawner : MonoBehaviour
+public class PieceSpawner : MonoBehaviour
 {
 	public GameObject[] piecePrefabs;
 

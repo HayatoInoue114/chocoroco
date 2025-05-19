@@ -1,12 +1,12 @@
 using UnityEngine;
 
-public class T_GameManager : MonoBehaviour
+public class GameManager : MonoBehaviour
 {
-	public static T_GameManager instance;
+	public static GameManager instance;
 
-	public T_GridManager gridManager;
-	public T_PieceSpawner spawner;
-	public GetClickedObject getClickedObject;
+	public GridManager gridManager;
+	public SelectionManager selectionManager;
+	public PieceSpawner spawner;
 
 	private void Awake()
 	{
