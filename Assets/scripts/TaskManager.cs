@@ -8,7 +8,7 @@ public class TaskManager : MonoBehaviour
     public List<Task> tasks_ = new List<Task>();
 
     //クリアしたタスクの数
-    public  int clearedTaskCount;
+    public int clearedTaskCount;
     public int nowTaskNum;
 
     public int MAXTASKNUMBER = 10;
@@ -39,7 +39,6 @@ public class TaskManager : MonoBehaviour
     //現在のタスク進行状況
     public void CheckTask(int deleteNum)
     {
-        needNum = tasks_[nowTaskNum].needBlockNum;
         //現在のタスクのクリア状況
         if (tasks_[nowTaskNum].CheckTask(deleteNum))
         {
@@ -49,4 +48,10 @@ public class TaskManager : MonoBehaviour
             clearedTaskCount++;
         }
     }
+
+    public void Update()
+    {
+        needNum = tasks_[nowTaskNum].needBlockNum;
+    }
 }
+

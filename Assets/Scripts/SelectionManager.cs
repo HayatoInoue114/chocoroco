@@ -97,6 +97,8 @@ public class SelectionManager : MonoBehaviour
 	private void HandleSelection()
 	{
 		Debug.Log("選択終了：" + selectedSet.Count + "個のブロックを選択しました");
+		//ブロック削除をタスクに渡す
+        GameManager.instance.taskManager.CheckTask(selectedSet.Count);
 
 		// ここで形と一致するかチェックして消すなどの処理
 		// 例: MatchesPattern(selectedBlocks)
@@ -107,7 +109,7 @@ public class SelectionManager : MonoBehaviour
 			b.Decision();
 		}
 
-		selectedSet.Clear();
+        selectedSet.Clear();
 		selectedList.Clear();
 	}
 }

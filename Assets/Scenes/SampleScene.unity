@@ -320,7 +320,8 @@ GameObject:
   - component: {fileID: 1446908871}
   - component: {fileID: 1446908870}
   - component: {fileID: 1446908874}
-  - component: {fileID: 1446908873}
+  - component: {fileID: 1446908875}
+  - component: {fileID: 1446908876}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -342,12 +343,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   width: 8
   height: 8
-  blockPrefabs:
-  - {fileID: 8148753665781687421, guid: 74a4fdc1f56bf1e4bb91beace1cafaa3, type: 3}
-  - {fileID: 3033382083490157148, guid: a55f8bdb5fab10b4e90cb995c67b91c7, type: 3}
-  numOfBlockType: 2
-  normalBlockCount: 1
-  colorBlockCount: 1
+  blockPrefab: {fileID: 3033382083490157148, guid: a55f8bdb5fab10b4e90cb995c67b91c7, type: 3}
 --- !u!114 &1446908871
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -361,8 +357,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gridManager: {fileID: 1446908870}
+  selectionManager: {fileID: 1446908876}
   spawner: {fileID: 1446908874}
-  getClickedObject: {fileID: 1446908873}
+  taskManager: {fileID: 1446908875}
 --- !u!4 &1446908872
 Transform:
   m_ObjectHideFlags: 0
@@ -378,20 +375,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1446908873
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1446908869}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a28a50ee6a9ff114f923766d201dad07, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  clickedStartObject: {fileID: 0}
-  clickingObject: {fileID: 0}
 --- !u!114 &1446908874
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -405,6 +388,36 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   piecePrefabs: []
+--- !u!114 &1446908875
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1446908869}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3ca16c2486dfdf48a21d90fa2ef0514, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tasks_: []
+  clearedTaskCount: 0
+  nowTaskNum: 0
+  MAXTASKNUMBER: 10
+  needNum: 0
+--- !u!114 &1446908876
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1446908869}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb07fc6b53322324d954573706d38a65, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isSelecting: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

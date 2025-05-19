@@ -27,7 +27,7 @@ public class Task : MonoBehaviour
         needBlockNum -= deletedBlockNum;
 
         //必要数壊したら次のタスクへ移動
-        if(needBlockNum < 0)
+        if(needBlockNum <= 0)
         {
             isCleared = true;
             return true;

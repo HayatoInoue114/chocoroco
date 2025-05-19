@@ -18,13 +18,13 @@ public class GameManager : MonoBehaviour
 	// Start is called once before the first execution of Update after the MonoBehaviour is created
 	void Start()
 	{
-		//gridManager.GenerateAllLines();
+		gridManager.GenerateAllLines();
 		taskManager.Start();
 	}
 
 	// Update is called once per frame
 	void Update()
 	{
-		taskManager.CheckTask(0);
+		taskManager.Update();
 	}
 }
