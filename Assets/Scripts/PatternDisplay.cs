@@ -3,11 +3,18 @@ using UnityEngine;
 
 public class PatternDisplay : MonoBehaviour
 {
-	public GameObject blockPrefab; // 表示用の小ブロックプレハブ
-	public Transform anchor;       // 表示する場所（空の親オブジェクト）
+	// 表示用の小ブロックプレハブ
+	public GameObject blockPrefab;
+	// 表示する場所（空の親オブジェクト）
+	public Transform anchor;
 
+	// 配置するオブジェクト
 	private List<GameObject> blocks = new();
 
+	/// <summary>
+	/// ブロックを配置してパターンを表示する
+	/// </summary>
+	/// <param name="pattern">配置</param>
 	public void ShowPattern(List<Vector2Int> pattern)
 	{
 		Clear();
@@ -19,6 +26,9 @@ public class PatternDisplay : MonoBehaviour
 		}
 	}
 
+	/// <summary>
+	/// 表示していたブロックを解放
+	/// </summary>
 	public void Clear()
 	{
 		foreach (var b in blocks)
