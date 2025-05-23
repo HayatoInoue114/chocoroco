@@ -10,10 +10,10 @@ public class GameManager : MonoBehaviour
 	public static GameManager instance;
 
 	// 参照できるように変数化
-	// インスペクターで参照できるようにしてね
+	// インスペクターに入れなくてもいい
 	public GridManager gridManager;
 	public SelectionManager selectionManager;
-	public PieceSpawner spawner;
+	public PatternManager patternManager;
 
 	private void Awake()
 	{
@@ -23,13 +23,22 @@ public class GameManager : MonoBehaviour
 	// Start is called once before the first execution of Update after the MonoBehaviour is created
 	void Start()
 	{
+		// 参照を取得
+		gridManager = GetComponent<GridManager>();
+		selectionManager = GetComponent<SelectionManager>();
+		patternManager = GetComponent<PatternManager>();
+
 		// マップを生成する
 		gridManager.GenerateAllLines();
+
+		// 新しくパターンを選ぶ
+		GameManager.instance.patternManager.ChoosePattern();
 	}
 
 	// Update is called once per frame
 	void Update()
 	{
-
+		// 行が綺麗に消えているか判定
+		gridManager.ProcessClearedRows();
 	}
 }

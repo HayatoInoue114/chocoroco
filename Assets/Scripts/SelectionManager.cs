@@ -12,6 +12,9 @@ public class SelectionManager : MonoBehaviour
 	public HashSet<Block> selectedSet = new HashSet<Block>();
 	// クリック中か
 	public bool isSelecting = false;
+	// なぞった部分
+	public List<Vector2Int> traced = new List<Vector2Int>();
+
 
 	// Update is called once per frame
 	void Update()
@@ -23,6 +26,7 @@ public class SelectionManager : MonoBehaviour
 			isSelecting = true;
 			selectedSet.Clear();
 			selectedList.Clear();
+			traced.Clear();
 		}
 		// クリック中
 		if (isSelecting && Input.GetMouseButton(0))
@@ -45,7 +49,10 @@ public class SelectionManager : MonoBehaviour
 		if (Input.GetMouseButtonUp(0) && isSelecting)
 		{
 			isSelecting = false;
-			HandleSelection();
+			if (traced.Count > 0)
+			{
+				HandleSelection();
+			}
 		}
 	}
 
@@ -76,6 +83,12 @@ public class SelectionManager : MonoBehaviour
 	/// </summary>
 	void TrySelect(Block target)
 	{
+		// 削除されているか
+		if (target.destroyed)
+		{
+			return;
+		}
+
 		// 手戻りが発生するか調べる
 		if (selectedSet.Contains(target))
 		{
@@ -86,6 +99,7 @@ public class SelectionManager : MonoBehaviour
 				removed.Unselect();
 				selectedList.RemoveAt(selectedList.Count - 1);
 				selectedSet.Remove(removed);
+				traced.Remove(removed.GridPosition); // ← ここ！
 			}
 
 			// それ以外のすでに選ばれたブロックは無視
@@ -103,15 +117,27 @@ public class SelectionManager : MonoBehaviour
 		target.Select();
 		selectedList.Add(target);
 		selectedSet.Add(target);
+		traced.Add(target.GridPosition);
 	}
 
-	// 選択し終わった後の処理
+	/// <summary>
+	/// 選択し終わった後の処理
+	/// </summary>
 	private void HandleSelection()
 	{
-		Debug.Log("選択終了：" + selectedSet.Count + "個のブロックを選択しました");
+		// 用意しているパターンと一致しているか
+		Pattern match = GameManager.instance.patternManager.Match(traced);
 
-		// ここで形と一致するかチェックして消すなどの処理
-		// 例: MatchesPattern(selectedBlocks)
+		// 一致していない
+		if (match == null)
+		{
+			// 選択を解除
+			foreach (Block block in selectedList)
+			{
+				block.Unselect();
+			}
+			return;
+		}
 
 		// 確定したのでループ
 		foreach (Block b in selectedSet)
@@ -120,8 +146,12 @@ public class SelectionManager : MonoBehaviour
 			b.Decision();
 		}
 
+		// 新しくパターンを選ぶ
+		GameManager.instance.patternManager.ChoosePattern();
+
 		// リスト消去
 		selectedSet.Clear();
 		selectedList.Clear();
+		traced.Clear();
 	}
 }
