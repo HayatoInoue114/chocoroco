@@ -128,8 +128,8 @@ public class SelectionManager : MonoBehaviour
 		// 用意しているパターンと一致しているか
 		Pattern match = GameManager.instance.patternManager.Match(traced);
 
-		// 一致していない
-		if (match == null)
+        // 一致していない
+        if (match == null)
 		{
 			// 選択を解除
 			foreach (Block block in selectedList)
@@ -139,8 +139,11 @@ public class SelectionManager : MonoBehaviour
 			return;
 		}
 
-		// 確定したのでループ
-		foreach (Block b in selectedSet)
+        //ブロック削除をタスクに渡す
+        GameManager.instance.taskManager.CheckTask(selectedList);
+
+        // 確定したのでループ
+        foreach (Block b in selectedSet)
 		{
 			// リセット（ここは条件によって消したりも可）
 			b.Decision();
