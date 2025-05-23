@@ -32,7 +32,7 @@ public class GridManager : MonoBehaviour
 		if (clearedRows.Count == 0)
 			return;
 
-		Debug.Log("完全に消えた行:" + clearedRows.Count);
+		//Debug.Log("完全に消えた行:" + clearedRows.Count);
 
 		DropBlocks(clearedRows);
 		AddNewTopRow(clearedRows.Count);
@@ -48,10 +48,7 @@ public class GridManager : MonoBehaviour
 			for (int x = 0; x < width; x++)
 			{
 				// ブロック生成
-				GameObject newBlock = Instantiate(blockPrefab, new Vector3(x, y, 0), Quaternion.identity);
-				Block block = newBlock.GetComponentInChildren<Collider>().GetComponent<Block>();
-				block.GridPosition = new Vector2Int(x, y);
-				grid[x, y] = block;
+				CreateAndRegistBlock(x, y);
 			}
 		}
 	}
@@ -112,12 +109,45 @@ public class GridManager : MonoBehaviour
 			int y = height - (1 + i);
 			for (int x = 0; x < width; x++)
 			{
-				GameObject newBlock = Instantiate(blockPrefab, new Vector3(x, y, 0), Quaternion.identity);
-				Block block = newBlock.GetComponentInChildren<Collider>().GetComponent<Block>();
-				block.GridPosition = new Vector2Int(x, y);
-				grid[x, y] = block;
-				block.Select();
+				CreateAndRegistBlock(x, y);
 			}
 		}
 	}
+
+	/// <summary>
+	/// ブロックを作成して登録
+	/// </summary>
+	private void CreateAndRegistBlock(int x, int y)
+	{
+		// インスタンス生成
+		GameObject newBlock = Instantiate(blockPrefab, new Vector3(x, y, 0), Quaternion.identity);
+		// 機能を参照
+		Block block = newBlock.GetComponentInChildren<Collider>().GetComponent<Block>();
+		// 設定
+		block.GridPosition = new Vector2Int(x, y);
+		block.color = Color.white;
+		// 色をランダムで設定(設定は要調整)
+		// 1/10 で色付き
+		int rand = Random.Range(0, 10);
+		if (rand == 0)
+		{
+			rand = Random.Range(0, 3);
+			switch (rand)
+			{
+				case 0:
+					block.color = Color.red;
+					break;
+				case 1:
+					block.color = Color.green;
+					break;
+				case 2:
+					block.color = Color.blue;
+					break;
+			}
+		}
+		block.GetComponent<Renderer>().material.color = block.color;
+		// 登録
+		grid[x, y] = block;
+	}
+
 }
