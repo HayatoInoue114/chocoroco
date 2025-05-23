@@ -12,23 +12,33 @@ public class PatternManager : MonoBehaviour
 	public Pattern cullentPattern = null;
 	// ネクスト
 	public Pattern nextPattern = null;
+	// ホールド
+	public Pattern holdPattern = null;
+	// ホールドしたかのフラグ
+	public bool IsHeld = false;
 
 	private void Awake()
 	{
 		LoadPatterns();
 
+		// ネクストを先に設定
 		int rand = Random.Range(0, patterns.Count);
 		nextPattern = patterns[rand];
+		// ホールドを設定
+		holdPattern = patterns[0];
 	}
 
 	private void LoadPatterns()
 	{
+		// 一文字
+		patterns.Add(new Pattern("1", new List<Vector2Int> {
+			new Vector2Int(0,0)
+		}));
 		// L字パターン
 		patterns.Add(new Pattern("L字", new List<Vector2Int> {
 			new Vector2Int(0,0), new Vector2Int(0,1),
 			new Vector2Int(0,2), new Vector2Int(1,2)
 		}));
-
 		// 他にも T字、I字、Z字 など
 		// I字パターン
 		patterns.Add(new Pattern("I字2横", new List<Vector2Int> {
@@ -67,16 +77,37 @@ public class PatternManager : MonoBehaviour
 	/// </summary>
 	public void ChoosePattern()
 	{
-		// パターン表示リセット
-		GameManager.instance.patternDisplayCullent.Clear();
-		GameManager.instance.patternDisplayNext.Clear();
 		// ランダムで選出
 		int rand = Random.Range(0, patterns.Count);
 		cullentPattern = nextPattern;
 		nextPattern = patterns[rand];
-		//Debug.Log("指定形状:" + cullentPattern.name);
-		// パターン表示
+		// ホールドフラグを戻す
+		IsHeld = false;
+		UpdatePatternDisplay();
+	}
+
+	public void HoldPattern()
+	{
+		if (!IsHeld)
+		{
+			Pattern ptn = holdPattern;
+			holdPattern = cullentPattern;
+			cullentPattern = ptn;
+			IsHeld = true;
+			UpdatePatternDisplay();
+		}
+	}
+
+	public void UpdatePatternDisplay()
+	{
+		// 消去
+		GameManager.instance.patternDisplayCullent.Clear();
+		GameManager.instance.patternDisplayNext.Clear();
+		GameManager.instance.patternDisplayHold.Clear();
+
+		// 更新
 		GameManager.instance.patternDisplayCullent.ShowPattern(cullentPattern.shape);
 		GameManager.instance.patternDisplayNext.ShowPattern(nextPattern.shape);
+		GameManager.instance.patternDisplayHold.ShowPattern(holdPattern.shape);
 	}
 }
