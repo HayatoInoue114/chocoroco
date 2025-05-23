@@ -3,13 +3,22 @@ using UnityEngine;
 
 public class PatternManager : MonoBehaviour
 {
+	// パターンを管理
 	public List<Pattern> patterns = new List<Pattern>();
+	// パターンを表示するためのブロック群
 
+	// 今のパターンを持っている
+	// ネクストとかホールドとかのために配列化するかも
 	public Pattern cullentPattern = null;
+	// ネクスト
+	public Pattern nextPattern = null;
 
 	private void Awake()
 	{
 		LoadPatterns();
+
+		int rand = Random.Range(0, patterns.Count);
+		nextPattern = patterns[rand];
 	}
 
 	private void LoadPatterns()
@@ -58,8 +67,16 @@ public class PatternManager : MonoBehaviour
 	/// </summary>
 	public void ChoosePattern()
 	{
+		// パターン表示リセット
+		GameManager.instance.patternDisplayCullent.Clear();
+		GameManager.instance.patternDisplayNext.Clear();
+		// ランダムで選出
 		int rand = Random.Range(0, patterns.Count);
-		cullentPattern = patterns[rand];
-		Debug.Log("指定形状:" + cullentPattern.name);
+		cullentPattern = nextPattern;
+		nextPattern = patterns[rand];
+		//Debug.Log("指定形状:" + cullentPattern.name);
+		// パターン表示
+		GameManager.instance.patternDisplayCullent.ShowPattern(cullentPattern.shape);
+		GameManager.instance.patternDisplayNext.ShowPattern(nextPattern.shape);
 	}
 }

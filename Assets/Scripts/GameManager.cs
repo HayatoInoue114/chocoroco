@@ -14,6 +14,9 @@ public class GameManager : MonoBehaviour
 	public GridManager gridManager;
 	public SelectionManager selectionManager;
 	public PatternManager patternManager;
+	public PatternDisplay patternDisplayCullent;
+	public PatternDisplay patternDisplayNext;
+
 
 	private void Awake()
 	{
@@ -27,12 +30,13 @@ public class GameManager : MonoBehaviour
 		gridManager = GetComponent<GridManager>();
 		selectionManager = GetComponent<SelectionManager>();
 		patternManager = GetComponent<PatternManager>();
-
+		patternDisplayCullent = GameObject.Find("PatternDisplayCullentAnchor").GetComponent<PatternDisplay>();
+		patternDisplayNext = GameObject.Find("PatternDisplayNextAnchor").GetComponent<PatternDisplay>();
 		// マップを生成する
 		gridManager.GenerateAllLines();
 
 		// 新しくパターンを選ぶ
-		GameManager.instance.patternManager.ChoosePattern();
+		patternManager.ChoosePattern();
 	}
 
 	// Update is called once per frame
