@@ -44,12 +44,14 @@ public class TaskManager : MonoBehaviour
     public void CheckTask(List<Block> blocks)
     {
         //現在のタスクのクリア状況
-        if (tasks_[nowTaskNum].CheckTask(blocks.Count))
-        {
-            //クリアしてたら次のタスクへ
-            nowTaskNum++;
-            //クリア済み++
-            clearedTaskCount++;
+        foreach (Block block in blocks) { 
+            if (tasks_[nowTaskNum].CheckTask(block))
+            {
+                //クリアしてたら次のタスクへ
+                nowTaskNum++;
+                //クリア済み++
+                clearedTaskCount++;
+            }
         }
     }
 
