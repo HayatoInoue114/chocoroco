@@ -132,6 +132,7 @@ GameObject:
   - component: {fileID: 148903376}
   - component: {fileID: 148903375}
   - component: {fileID: 148903374}
+  - component: {fileID: 148903378}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -210,6 +211,24 @@ MonoBehaviour:
   gridManager: {fileID: 148903376}
   selectionManager: {fileID: 148903375}
   spawner: {fileID: 148903374}
+  taskManager: {fileID: 148903378}
+--- !u!114 &148903378
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 148903368}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3ca16c2486dfdf48a21d90fa2ef0514, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tasks_: []
+  clearedTaskCount: 0
+  nowTaskNum: 0
+  MAXTASKNUMBER: 10
+  needNum: 0
 --- !u!1 &181595850
 GameObject:
   m_ObjectHideFlags: 0

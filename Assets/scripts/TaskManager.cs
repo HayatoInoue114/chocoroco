@@ -37,10 +37,10 @@ public class TaskManager : MonoBehaviour
     }
 
     //現在のタスク進行状況
-    public void CheckTask(int deleteNum)
+    public void CheckTask(List<Block> blocks)
     {
         //現在のタスクのクリア状況
-        if (tasks_[nowTaskNum].CheckTask(deleteNum))
+        if (tasks_[nowTaskNum].CheckTask(blocks.Count))
         {
             //クリアしてたら次のタスクへ
             nowTaskNum++;
@@ -51,6 +51,7 @@ public class TaskManager : MonoBehaviour
 
     public void Update()
     {
+        //必要ブロック数の計算
         needNum = tasks_[nowTaskNum].needBlockNum;
     }
 }

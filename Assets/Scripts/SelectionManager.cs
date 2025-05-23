@@ -98,7 +98,7 @@ public class SelectionManager : MonoBehaviour
 	{
 		Debug.Log("選択終了：" + selectedSet.Count + "個のブロックを選択しました");
 		//ブロック削除をタスクに渡す
-        GameManager.instance.taskManager.CheckTask(selectedSet.Count);
+        GameManager.instance.taskManager.CheckTask(selectedList);
 
 		// ここで形と一致するかチェックして消すなどの処理
 		// 例: MatchesPattern(selectedBlocks)
