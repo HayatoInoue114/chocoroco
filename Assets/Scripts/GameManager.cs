@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviour
 	public PatternManager patternManager;
 	public PatternDisplay patternDisplayCullent;
 	public PatternDisplay patternDisplayNext;
+	public PatternDisplay patternDisplayHold;
 
 
 	private void Awake()
@@ -32,6 +33,7 @@ public class GameManager : MonoBehaviour
 		patternManager = GetComponent<PatternManager>();
 		patternDisplayCullent = GameObject.Find("PatternDisplayCullentAnchor").GetComponent<PatternDisplay>();
 		patternDisplayNext = GameObject.Find("PatternDisplayNextAnchor").GetComponent<PatternDisplay>();
+		patternDisplayHold = GameObject.Find("PatternDisplayHoldAnchor").GetComponent<PatternDisplay>();
 		// マップを生成する
 		gridManager.GenerateAllLines();
 
@@ -44,5 +46,9 @@ public class GameManager : MonoBehaviour
 	{
 		// 行が綺麗に消えているか判定
 		gridManager.ProcessClearedRows();
+		if (Input.GetKeyDown(KeyCode.Q))
+		{
+			patternManager.HoldPattern();
+		}
 	}
 }
