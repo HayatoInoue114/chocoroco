@@ -11,19 +11,27 @@ public class Block : MonoBehaviour
     private bool isSelected = false;
     // 消去されている
     public bool destroyed = false;
+	// 色で分ける
+	// white    : 普通、一番多い
+	// red      : 赤、1/3
+	// green    : 緑、1/3
+	// blur     : 青、1/3
+	// 最初に設定して以降変更しない
+	public Color color = Color.white;
+
 
     public void Select()
     {
         isSelected = true;
-        GetComponent<Renderer>().material.color = Color.yellow;
-        //Debug.Log("選択中：" + GridPosition + "を選択");
+        // 表示する色を変える
+        GetComponent<Renderer>().material.color = color + Color.gray;
     }
 
     public void Unselect()
     {
         isSelected = false;
-        GetComponent<Renderer>().material.color = Color.white;
-        //Debug.Log("選択中：" + GridPosition + "を選択解除");
+        // 表示する色を変える
+        GetComponent<Renderer>().material.color = color;
 	}
 
     // 選択確定
@@ -31,7 +39,7 @@ public class Block : MonoBehaviour
 	{
         destroyed = true;
         // 色変えたり演出させる
-		GetComponent<Renderer>().material.color = Color.red;
+		GetComponent<Renderer>().material.color = color - Color.gray;
         // 親ごと消す
 		Destroy(transform.root.gameObject,0.5f);
 	}
