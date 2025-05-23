@@ -11,7 +11,9 @@ public class TaskManager : MonoBehaviour
     public int clearedTaskCount;
     public int nowTaskNum;
 
+    //タスク数
     public int MAXTASKNUMBER = 10;
+    //必要数
     public int needNum;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -29,7 +31,9 @@ public class TaskManager : MonoBehaviour
         for (int i = 0; i < MAXTASKNUMBER; i++)
         {
             Task task = new Task();
-            task.Initialize(i);
+            int needDeleteNum = 10;
+
+            task.Initialize(i, needDeleteNum);
 
             //PushBack
             tasks_.Add(task);

@@ -8,9 +8,9 @@ public class Task : MonoBehaviour
     public bool isCleared; //ƒNƒŠƒAó‘Ô
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-   public void Initialize(int i)
+   public void Initialize(int i, int needNum)
     {
-        needBlockNum = 10;
+        needBlockNum = needNum;
         taskNo = i;
         isCleared = false;
     }
