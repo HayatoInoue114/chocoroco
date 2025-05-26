@@ -39,7 +39,7 @@ public class Block : MonoBehaviour
 	{
         destroyed = true;
         // 色変えたり演出させる
-		GetComponent<Renderer>().material.color = color - Color.gray;
+		GetComponent<Renderer>().material.color = color - new Color(0.7f,0.7f,0.7f,1.0f);
         // 親ごと消す
 		Destroy(transform.root.gameObject,0.5f);
 	}
