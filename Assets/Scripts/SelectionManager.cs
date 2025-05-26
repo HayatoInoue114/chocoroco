@@ -113,6 +113,12 @@ public class SelectionManager : MonoBehaviour
 				return; // 隣接してない → 選ばせない
 		}
 
+		// 選択数を超過させない
+		if (selectedSet.Count >= GameManager.instance.patternManager.cullentPattern.shape.Count())
+		{
+			return;
+		}
+
 		// 選択
 		target.Select();
 		selectedList.Add(target);
