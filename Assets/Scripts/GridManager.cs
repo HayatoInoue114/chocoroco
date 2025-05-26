@@ -81,9 +81,10 @@ public class GridManager : MonoBehaviour
 	/// </summary>
 	private void DropBlocks(List<int> clearedRows)
 	{
-		foreach (int row in clearedRows)
+		for (int i = 0; i < clearedRows.Count; i++)
 		{
-			for (int y = row + 1; y < height; y++)
+			// 下に詰めた分消えている行もずらす
+			for (int y = clearedRows[i] + 1 - i; y < height; y++)
 			{
 				for (int x = 0; x < width; x++)
 				{
