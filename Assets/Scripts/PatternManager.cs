@@ -31,22 +31,116 @@ public class PatternManager : MonoBehaviour
 	private void LoadPatterns()
 	{
 		// 一文字
-		patterns.Add(new Pattern("1", new List<Vector2Int> {
+		patterns.Add(new Pattern("天上天下唯我独尊", new List<Vector2Int> {
 			new Vector2Int(0,0)
 		}));
-		// L字パターン
-		patterns.Add(new Pattern("L字", new List<Vector2Int> {
-			new Vector2Int(0,0), new Vector2Int(0,1),
-			new Vector2Int(0,2), new Vector2Int(1,2)
-		}));
-		// 他にも T字、I字、Z字 など
+
 		// I字パターン
+		#region I
 		patterns.Add(new Pattern("I字2横", new List<Vector2Int> {
 			new Vector2Int(0,0), new Vector2Int(1,0),
 		}));
-		// I字パターン
 		patterns.Add(new Pattern("I字2縦", new List<Vector2Int> {
 			new Vector2Int(0,0), new Vector2Int(0,1),
+		}));
+		patterns.Add(new Pattern("I字3横", new List<Vector2Int> {
+			new Vector2Int(0,0), new Vector2Int(1,0),
+			new Vector2Int(2,0)
+		}));
+		patterns.Add(new Pattern("I字3縦", new List<Vector2Int> {
+			new Vector2Int(0,0), new Vector2Int(0,1),
+			new Vector2Int(0,2)
+		}));
+		patterns.Add(new Pattern("I字4横", new List<Vector2Int> {
+			new Vector2Int(0,0), new Vector2Int(1,0),
+			new Vector2Int(2,0), new Vector2Int(3,0)
+		}));
+		patterns.Add(new Pattern("I字4縦", new List<Vector2Int> {
+			new Vector2Int(0,0), new Vector2Int(0,1),
+			new Vector2Int(0,2), new Vector2Int(0,3)
+		}));
+		#endregion
+		// L字パターン
+		#region L
+		patterns.Add(new Pattern("L字3右上", new List<Vector2Int> {
+			new Vector2Int(0,0), new Vector2Int(1,0),
+			new Vector2Int(1,1)
+		}));
+		patterns.Add(new Pattern("L字3右下", new List<Vector2Int> {
+			new Vector2Int(0,1), new Vector2Int(1,1),
+			new Vector2Int(1,0)
+		}));
+		patterns.Add(new Pattern("L字3左下", new List<Vector2Int> {
+			new Vector2Int(0,0),new Vector2Int(0,1),
+			new Vector2Int(1,1),
+		}));
+		patterns.Add(new Pattern("L字3左上", new List<Vector2Int> {
+			new Vector2Int(0,0), new Vector2Int(1,0),
+			new Vector2Int(1,1)
+		}));
+		patterns.Add(new Pattern("L字縦右上", new List<Vector2Int> {
+			new Vector2Int(0,0), new Vector2Int(0,1),
+			new Vector2Int(0,2), new Vector2Int(1,2)
+		}));
+		patterns.Add(new Pattern("L字横右上", new List<Vector2Int> {
+			new Vector2Int(0,0), new Vector2Int(1,0),
+			new Vector2Int(2,0), new Vector2Int(2,1)
+		}));
+		patterns.Add(new Pattern("L字横右下", new List<Vector2Int> {
+			new Vector2Int(0,1), new Vector2Int(1,1),
+			new Vector2Int(2,1), new Vector2Int(2,0)
+		}));
+		patterns.Add(new Pattern("L字横左下", new List<Vector2Int> {
+			new Vector2Int(0,1), new Vector2Int(1,1),
+			new Vector2Int(2,1), new Vector2Int(0,0)
+		}));
+		patterns.Add(new Pattern("L字横左上", new List<Vector2Int> {
+			new Vector2Int(0,0), new Vector2Int(1,0),
+			new Vector2Int(2,0), new Vector2Int(0,1)
+		}));
+		patterns.Add(new Pattern("L字縦右上", new List<Vector2Int> {
+			new Vector2Int(0,0), new Vector2Int(0,1),
+			new Vector2Int(0,2), new Vector2Int(1,2)
+		}));
+		patterns.Add(new Pattern("L字縦右下", new List<Vector2Int> {
+			new Vector2Int(0,0), new Vector2Int(0,1),
+			new Vector2Int(0,2), new Vector2Int(1,0)
+		}));
+		patterns.Add(new Pattern("L字縦左下", new List<Vector2Int> {
+			new Vector2Int(0,0), new Vector2Int(1,0),
+			new Vector2Int(1,1), new Vector2Int(1,2)
+		}));
+		patterns.Add(new Pattern("L字縦左上", new List<Vector2Int> {
+			new Vector2Int(0,2), new Vector2Int(1,0),
+			new Vector2Int(1,1), new Vector2Int(1,2)
+		}));
+		#endregion
+		// Z 字パターン
+		#region Z
+		patterns.Add(new Pattern("Z字横", new List<Vector2Int> {
+			new Vector2Int(0,1), new Vector2Int(1,1),
+			new Vector2Int(1,0), new Vector2Int(0,2)
+		}));
+		patterns.Add(new Pattern("Z字縦", new List<Vector2Int> {
+			new Vector2Int(0,0), new Vector2Int(0,1),
+			new Vector2Int(1,1), new Vector2Int(1,2)
+		}));
+		#endregion
+		// S 字パターン
+		#region S
+		patterns.Add(new Pattern("S字横", new List<Vector2Int> {
+			new Vector2Int(0,0), new Vector2Int(1,0),
+			new Vector2Int(1,1), new Vector2Int(2,1)
+		}));
+		patterns.Add(new Pattern("S字縦", new List<Vector2Int> {
+			new Vector2Int(0,2), new Vector2Int(0,1),
+			new Vector2Int(1,1), new Vector2Int(1,0)
+		}));
+		#endregion
+		// O 字パターン
+		patterns.Add(new Pattern("O字", new List<Vector2Int> {
+			new Vector2Int(0,0),new Vector2Int(0,1),
+			new Vector2Int(1,1),new Vector2Int(1,0)
 		}));
 	}
 
@@ -109,5 +203,6 @@ public class PatternManager : MonoBehaviour
 		GameManager.instance.patternDisplayCullent.ShowPattern(cullentPattern.shape);
 		GameManager.instance.patternDisplayNext.ShowPattern(nextPattern.shape);
 		GameManager.instance.patternDisplayHold.ShowPattern(holdPattern.shape);
+		Debug.Log(cullentPattern.name);
 	}
 }
