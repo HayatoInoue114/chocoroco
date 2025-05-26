@@ -13,7 +13,7 @@ public class SelectionManager : MonoBehaviour
 	// クリック中か
 	public bool isSelecting = false;
 	// なぞった部分
-	public List<Vector2Int> traced = new List<Vector2Int>();
+	//public List<Vector2Int> traced = new List<Vector2Int>();
 
 
 	// Update is called once per frame
@@ -26,7 +26,7 @@ public class SelectionManager : MonoBehaviour
 			isSelecting = true;
 			selectedSet.Clear();
 			selectedList.Clear();
-			traced.Clear();
+			//traced.Clear();
 		}
 		// クリック中
 		if (isSelecting && Input.GetMouseButton(0))
@@ -49,7 +49,7 @@ public class SelectionManager : MonoBehaviour
 		if (Input.GetMouseButtonUp(0) && isSelecting)
 		{
 			isSelecting = false;
-			if (traced.Count > 0)
+			if (selectedList.Count > 0)
 			{
 				HandleSelection();
 			}
@@ -61,7 +61,11 @@ public class SelectionManager : MonoBehaviour
 	/// </summary>
 	bool IsNeighbor(Block a, Block b)
 	{
-		Vector2Int pa = a.GridPosition; // 例：マス目の位置 (x,y)
+		// 同じブロックだった場合選択しない
+		if (a == b)
+			return false;
+		// マス目の位置 (x,y)
+		Vector2Int pa = a.GridPosition;
 		Vector2Int pb = b.GridPosition;
 
 		Vector2Int delta = pb - pa;
@@ -99,7 +103,7 @@ public class SelectionManager : MonoBehaviour
 				removed.Unselect();
 				selectedList.RemoveAt(selectedList.Count - 1);
 				selectedSet.Remove(removed);
-				traced.Remove(removed.GridPosition); // ← ここ！
+				//traced.Remove(removed.GridPosition); // ← ここ！
 			}
 
 			// それ以外のすでに選ばれたブロックは無視
@@ -123,7 +127,7 @@ public class SelectionManager : MonoBehaviour
 		target.Select();
 		selectedList.Add(target);
 		selectedSet.Add(target);
-		traced.Add(target.GridPosition);
+		//traced.Add(target.GridPosition);
 	}
 
 	/// <summary>
@@ -132,7 +136,7 @@ public class SelectionManager : MonoBehaviour
 	private void HandleSelection()
 	{
 		// 用意しているパターンと一致しているか
-		Pattern match = GameManager.instance.patternManager.Match(traced);
+		Pattern match = GameManager.instance.patternManager.Match(GetRelativePattern());
 
 		// 一致していない
 		if (match == null)
@@ -158,6 +162,16 @@ public class SelectionManager : MonoBehaviour
 		// リスト消去
 		selectedSet.Clear();
 		selectedList.Clear();
-		traced.Clear();
+		//traced.Clear();
+	}
+
+	private List<Vector2Int> GetRelativePattern()
+	{
+		List<Vector2Int> traced = new List<Vector2Int>();
+		foreach (Block block in selectedList)
+		{
+			traced.Add(block.GridPosition);
+		}
+		return traced;
 	}
 }
