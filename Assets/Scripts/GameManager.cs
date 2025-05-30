@@ -12,7 +12,7 @@ public class GameManager : MonoBehaviour
     public GridManager gridManager;
     public SelectionManager selectionManager;
     public PatternManager patternManager;
-    public PatternDisplay patternDisplayCullent;
+    public PatternDisplay patternDisplayCurrent;
     public PatternDisplay patternDisplayNext;
     public PatternDisplay patternDisplayHold;
     public ScoreManager scoreManager;
@@ -20,6 +20,7 @@ public class GameManager : MonoBehaviour
     // 状態管理用
     private enum GameState { Title, Playing, GameOver }
     private GameState currentState;
+	public TaskManager taskManager;
 
     private void Awake()
     {
@@ -60,7 +61,21 @@ public class GameManager : MonoBehaviour
             initializationError = true;
         }
 
-        GameObject nextAnchorObj = GameObject.Find("PatternDisplayNextAnchor");
+		GameObject currentAnchorObj = GameObject.Find("PatternDisplayCurrentAnchor");
+		if (currentAnchorObj != null)
+		{
+			patternDisplayCurrent = currentAnchorObj.GetComponent<PatternDisplay>();
+			if (patternDisplayCurrent == null)
+			{
+				Debug.LogError("[GameManager] PatternDisplay component not found on 'PatternDisplayCurrentAnchor' GameObject.", currentAnchorObj);
+			}
+		}
+		else
+		{
+			Debug.LogError("[GameManager] 'PatternDisplayCurrentAnchor' GameObject not found in the scene.", this);
+		}
+
+		GameObject nextAnchorObj = GameObject.Find("PatternDisplayNextAnchor");
         if (nextAnchorObj != null)
         {
             patternDisplayNext = nextAnchorObj.GetComponent<PatternDisplay>();
@@ -99,6 +114,13 @@ public class GameManager : MonoBehaviour
             initializationError = true;
         }
 
+        taskManager = GetComponent<TaskManager>();
+        if (taskManager == null)
+        {
+            Debug.LogError("[GameManager] taskManager component not found on this GameObject. Please attach it in the Inspector.", this);
+            initializationError = true;
+        }
+
         // --- 初期化処理の実行 ---
         if (initializationError)
         {
@@ -129,20 +151,6 @@ public class GameManager : MonoBehaviour
             Debug.LogError("[GameManager] PatternManager is null, cannot choose pattern.", this);
         }
 
-        GameObject currentAnchorObj = GameObject.Find("PatternDisplayCurrentAnchor");
-        if (currentAnchorObj != null)
-        {
-            patternDisplayCullent = currentAnchorObj.GetComponent<PatternDisplay>();
-            if (patternDisplayCullent == null)
-            {
-                Debug.LogError("[GameManager] PatternDisplay component not found on 'PatternDisplayCurrentAnchor' GameObject.", currentAnchorObj);
-            }
-        }
-        else
-        {
-            Debug.LogError("[GameManager] 'PatternDisplayCurrentAnchor' GameObject not found in the scene.", this);
-        }
-       
     }
 
     // Update is called once per frame

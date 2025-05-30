@@ -9,7 +9,7 @@ public class PatternManager : MonoBehaviour
 
 	// 今のパターンを持っている
 	// ネクストとかホールドとかのために配列化するかも
-	public Pattern cullentPattern = null;
+	public Pattern currentPattern = null;
 	// ネクスト
 	public Pattern nextPattern = null;
 	// ホールド
@@ -76,7 +76,7 @@ public class PatternManager : MonoBehaviour
 		}));
 		patterns.Add(new Pattern("L字3左上", new List<Vector2Int> {
 			new Vector2Int(0,0), new Vector2Int(1,0),
-			new Vector2Int(1,0)
+			new Vector2Int(0,1)
 		}));
 		patterns.Add(new Pattern("L字縦右上", new List<Vector2Int> {
 			new Vector2Int(0,0), new Vector2Int(0,1),
@@ -159,9 +159,9 @@ public class PatternManager : MonoBehaviour
 		//		return pattern;
 		//}
 		// 現在のパターンと検証
-		if (cullentPattern.Matches(traced))
+		if (currentPattern.Matches(traced))
 		{
-			return cullentPattern;
+			return currentPattern;
 		}
 		return null;
 	}
@@ -173,7 +173,7 @@ public class PatternManager : MonoBehaviour
 	{
 		// ランダムで選出
 		int rand = Random.Range(0, patterns.Count);
-		cullentPattern = nextPattern;
+		currentPattern = nextPattern;
 		nextPattern = patterns[rand];
 		// ホールドフラグを戻す
 		IsHeld = false;
@@ -185,8 +185,8 @@ public class PatternManager : MonoBehaviour
 		if (!IsHeld)
 		{
 			Pattern ptn = holdPattern;
-			holdPattern = cullentPattern;
-			cullentPattern = ptn;
+			holdPattern = currentPattern;
+			currentPattern = ptn;
 			IsHeld = true;
 			UpdatePatternDisplay();
 		}
@@ -195,9 +195,9 @@ public class PatternManager : MonoBehaviour
 	public void UpdatePatternDisplay()
 	{
 		// 更新
-		GameManager.instance.patternDisplayCullent.ShowPattern(cullentPattern.shape);
+		GameManager.instance.patternDisplayCurrent.ShowPattern(currentPattern.shape);
 		GameManager.instance.patternDisplayNext.ShowPattern(nextPattern.shape);
 		GameManager.instance.patternDisplayHold.ShowPattern(holdPattern.shape);
-		Debug.Log(cullentPattern.name);
+		Debug.Log(currentPattern.name);
 	}
 }
