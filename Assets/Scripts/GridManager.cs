@@ -121,20 +121,57 @@ public class GridManager : MonoBehaviour
 	/// </summary>
 	private void CreateAndRegistBlock(int x, int y)
 	{
+		// blockPrefabが割り当てられているか確認
+		if (blockPrefab == null)
+		{
+			Debug.LogError("GridManagerのblockPrefabがインスペクターで設定されていません！処理を中断します。");
+			return; // blockPrefabがなければ何もできないので処理を中断
+		}
+
 		// インスタンス生成
 		GameObject newBlock = Instantiate(blockPrefab, new Vector3(x, y, 0), Quaternion.identity);
+
 		// 機能を参照
-		Block block = newBlock.GetComponentInChildren<Collider>().GetComponent<Block>();
+		// GetComponentInChildren<Collider>() を使っているため、プレハブのColliderが子オブジェクトにあることを想定
+		Collider blockCollider = newBlock.GetComponentInChildren<Collider>();
+		if (blockCollider == null)
+		{
+			Debug.LogError($"生成されたブロック ({newBlock.name}) またはその子オブジェクトに Collider が見つかりません。プレハブの構成を確認してください。");
+			Destroy(newBlock); // 不完全なオブジェクトは破棄
+			return;
+		}
+
+		Block block = blockCollider.GetComponent<Block>();
+		if (block == null)
+		{
+			Debug.LogError($"Colliderを持つオブジェクト ({blockCollider.gameObject.name}) に Block スクリプトが見つかりません。プレハブの構成を確認してください。");
+			Destroy(newBlock); // 不完全なオブジェクトは破棄
+			return;
+		}
+
 		// 設定
 		block.GridPosition = new Vector2Int(x, y);
-		block.color = Color.white;
+		block.color = Color.white; // デフォルトは白
+
+		// Rendererの取得と色の設定
+		Renderer blockRenderer = block.GetComponent<Renderer>(); // Blockスクリプトと同じオブジェクトにRendererがあると想定
+		if (blockRenderer == null)
+		{
+			// 子オブジェクトにもRendererがあるか探す場合
+			// blockRenderer = newBlock.GetComponentInChildren<Renderer>(); 
+			// if (blockRenderer == null)
+			// {
+			Debug.LogWarning($"ブロック ({block.name}) に Renderer コンポーネントが見つかりません。色は適用されません。");
+			// }
+		}
+
 		// 色をランダムで設定(設定は要調整)
 		// 1/10 で色付き
-		int rand = Random.Range(0, 10);
-		if (rand == 0)
+		int randColorChance = Random.Range(0, 10);
+		if (randColorChance == 0)
 		{
-			rand = Random.Range(0, 3);
-			switch (rand)
+			int randColor = Random.Range(0, 3);
+			switch (randColor)
 			{
 				case 0:
 					block.color = Color.red;
@@ -147,9 +184,18 @@ public class GridManager : MonoBehaviour
 					break;
 			}
 		}
-		block.GetComponent<Renderer>().material.color = block.color;
+
+		if (blockRenderer != null)
+		{
+			blockRenderer.material.color = block.color;
+		}
+		else
+		{
+			// Rendererがない場合でも、block.colorには色がセットされているので、
+			// 他のスクリプトから色情報を参照することは可能です。
+		}
+
 		// 登録
 		grid[x, y] = block;
 	}
-
 }
