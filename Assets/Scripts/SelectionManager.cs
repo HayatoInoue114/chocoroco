@@ -12,8 +12,6 @@ public class SelectionManager : MonoBehaviour
 	public HashSet<Block> selectedSet = new HashSet<Block>();
 	// クリック中か
 	public bool isSelecting = false;
-	// なぞった部分
-	//public List<Vector2Int> traced = new List<Vector2Int>();
 
 
 	// Update is called once per frame
@@ -26,7 +24,6 @@ public class SelectionManager : MonoBehaviour
 			isSelecting = true;
 			selectedSet.Clear();
 			selectedList.Clear();
-			//traced.Clear();
 		}
 		// クリック中
 		if (isSelecting && Input.GetMouseButton(0))
@@ -103,7 +100,6 @@ public class SelectionManager : MonoBehaviour
 				removed.Unselect();
 				selectedList.RemoveAt(selectedList.Count - 1);
 				selectedSet.Remove(removed);
-				//traced.Remove(removed.GridPosition); // ← ここ！
 			}
 
 			// それ以外のすでに選ばれたブロックは無視
@@ -127,7 +123,6 @@ public class SelectionManager : MonoBehaviour
 		target.Select();
 		selectedList.Add(target);
 		selectedSet.Add(target);
-		//traced.Add(target.GridPosition);
 	}
 
 	/// <summary>
