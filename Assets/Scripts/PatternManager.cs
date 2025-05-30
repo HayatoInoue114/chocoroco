@@ -63,7 +63,7 @@ public class PatternManager : MonoBehaviour
 		// L字パターン
 		#region L
 		patterns.Add(new Pattern("L字3右上", new List<Vector2Int> {
-			new Vector2Int(0,0), new Vector2Int(1,0),
+			new Vector2Int(0,0), new Vector2Int(0,1),
 			new Vector2Int(1,1)
 		}));
 		patterns.Add(new Pattern("L字3右下", new List<Vector2Int> {
@@ -76,7 +76,7 @@ public class PatternManager : MonoBehaviour
 		}));
 		patterns.Add(new Pattern("L字3左上", new List<Vector2Int> {
 			new Vector2Int(0,0), new Vector2Int(1,0),
-			new Vector2Int(1,1)
+			new Vector2Int(1,0)
 		}));
 		patterns.Add(new Pattern("L字縦右上", new List<Vector2Int> {
 			new Vector2Int(0,0), new Vector2Int(0,1),
