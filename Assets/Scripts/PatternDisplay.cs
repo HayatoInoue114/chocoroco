@@ -1,6 +1,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// パターンを画面上に配置するスクリプト
+/// </summary>
 public class PatternDisplay : MonoBehaviour
 {
 	// 表示用の小ブロックプレハブ
