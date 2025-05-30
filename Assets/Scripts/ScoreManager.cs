@@ -1,19 +1,47 @@
+using TMPro;
 using UnityEngine;
 
-/// <summary>
-/// スコアや、それに応じた期待値とか管理してほしい
-/// </summary>
 public class ScoreManager : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public static ScoreManager Instance { get; private set; }
+
+    public int score { get; private set; } = 0;
+    [SerializeField] private TMP_Text scoreText;
+
+    private void Awake()
     {
-        
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Start()
     {
-        
+        UpdateUI(); // �� �����ǉ��I
+    }
+
+    public void AddScore(int amount)
+    {
+        score += amount;
+        UpdateUI();
+    }
+
+    private void UpdateUI()
+    {
+        if (scoreText != null)
+        {
+            scoreText.text = "Score: " + score.ToString();
+        }
+    }
+
+    public void ResetScore()
+    {
+        score = 0;
+        UpdateUI();
     }
 }

@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// ゲーム全体を管理
@@ -6,51 +7,153 @@ using UnityEngine;
 /// </summary>
 public class GameManager : MonoBehaviour
 {
-	// シングルトンインスタンス
-	public static GameManager instance;
+    public static GameManager instance;
 
-	// 参照できるように変数化
-	// インスペクターに入れなくてもいい
-	public GridManager gridManager;
-	public SelectionManager selectionManager;
-	public PatternManager patternManager;
-	public PatternDisplay patternDisplayCullent;
-	public PatternDisplay patternDisplayNext;
-	public PatternDisplay patternDisplayHold;
-	public ScoreManager scoreManager;
+    public GridManager gridManager;
+    public SelectionManager selectionManager;
+    public PatternManager patternManager;
+    public PatternDisplay patternDisplayCullent;
+    public PatternDisplay patternDisplayNext;
+    public PatternDisplay patternDisplayHold;
+    public ScoreManager scoreManager;
 
-	private void Awake()
-	{
-		instance = this;
-	}
+    // 状態管理用
+    private enum GameState { Title, Playing, GameOver }
+    private GameState currentState;
 
-	// Start is called once before the first execution of Update after the MonoBehaviour is created
-	void Start()
-	{
-		// 参照を取得
-		gridManager = GetComponent<GridManager>();
-		selectionManager = GetComponent<SelectionManager>();
-		patternManager = GetComponent<PatternManager>();
-		patternDisplayCullent = GameObject.Find("PatternDisplayCullentAnchor").GetComponent<PatternDisplay>();
-		patternDisplayNext = GameObject.Find("PatternDisplayNextAnchor").GetComponent<PatternDisplay>();
-		patternDisplayHold = GameObject.Find("PatternDisplayHoldAnchor").GetComponent<PatternDisplay>();
-		scoreManager = GetComponent<ScoreManager>();
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else if (instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+    }
+    void Start()
+    {
+        bool initializationError = false;
 
-		// マップを生成する
-		gridManager.GenerateAllLines();
+        // --- 参照を取得し、nullチェックを行う ---
 
-		// 新しくパターンを選ぶ
-		patternManager.ChoosePattern();
-	}
+        gridManager = GetComponent<GridManager>();
+        if (gridManager == null)
+        {
+            Debug.LogError("[GameManager] GridManager component not found on this GameObject. Please attach it in the Inspector.", this);
+            initializationError = true;
+        }
 
-	// Update is called once per frame
-	void Update()
-	{
-		// 行が綺麗に消えているか判定
-		gridManager.ProcessClearedRows();
-		if (Input.GetKeyDown(KeyCode.Q))
-		{
-			patternManager.HoldPattern();
-		}
-	}
+        selectionManager = GetComponent<SelectionManager>();
+        if (selectionManager == null)
+        {
+            Debug.LogError("[GameManager] SelectionManager component not found on this GameObject. Please attach it in the Inspector.", this);
+            initializationError = true;
+        }
+
+        patternManager = GetComponent<PatternManager>();
+        if (patternManager == null)
+        {
+            Debug.LogError("[GameManager] PatternManager component not found on this GameObject. Please attach it in the Inspector.", this);
+            initializationError = true;
+        }
+
+        GameObject nextAnchorObj = GameObject.Find("PatternDisplayNextAnchor");
+        if (nextAnchorObj != null)
+        {
+            patternDisplayNext = nextAnchorObj.GetComponent<PatternDisplay>();
+            if (patternDisplayNext == null)
+            {
+                Debug.LogError("[GameManager] PatternDisplay component not found on 'PatternDisplayNextAnchor' GameObject.", nextAnchorObj);
+                initializationError = true;
+            }
+        }
+        else
+        {
+            Debug.LogError("[GameManager] 'PatternDisplayNextAnchor' GameObject not found in the scene.", this);
+            initializationError = true;
+        }
+
+        GameObject holdAnchorObj = GameObject.Find("PatternDisplayHoldAnchor");
+        if (holdAnchorObj != null)
+        {
+            patternDisplayHold = holdAnchorObj.GetComponent<PatternDisplay>();
+            if (patternDisplayHold == null)
+            {
+                Debug.LogError("[GameManager] PatternDisplay component not found on 'PatternDisplayHoldAnchor' GameObject.", holdAnchorObj);
+                initializationError = true;
+            }
+        }
+        else
+        {
+            Debug.LogError("[GameManager] 'PatternDisplayHoldAnchor' GameObject not found in the scene.", this);
+            initializationError = true;
+        }
+
+        scoreManager = GetComponent<ScoreManager>();
+        if (scoreManager == null)
+        {
+            Debug.LogError("[GameManager] ScoreManager component not found on this GameObject. Please attach it in the Inspector.", this);
+            initializationError = true;
+        }
+
+        // --- 初期化処理の実行 ---
+        if (initializationError)
+        {
+            Debug.LogError("[GameManager] Initialization failed due to missing components or GameObjects. Further game logic might be affected. Please check the errors above.", this);
+            // ゲームの実行をここで停止させるか、エラー状態を示すフラグを立てるなどの対応も検討できます。
+            // enabled = false; // GameManagerのUpdateを停止するなど
+            return;
+        }
+
+        // 必須コンポーネントが取得できた場合のみ実行
+        if (gridManager != null)
+        {
+            gridManager.GenerateAllLines();
+        }
+        else
+        {
+            // このログは上のチェックで既に出ているはずだが、念のため
+            Debug.LogError("[GameManager] GridManager is null, cannot generate lines.", this);
+        }
+
+        if (patternManager != null)
+        {
+            patternManager.ChoosePattern();
+        }
+        else
+        {
+            // このログは上のチェックで既に出ているはずだが、念のため
+            Debug.LogError("[GameManager] PatternManager is null, cannot choose pattern.", this);
+        }
+
+        GameObject currentAnchorObj = GameObject.Find("PatternDisplayCurrentAnchor");
+        if (currentAnchorObj != null)
+        {
+            patternDisplayCullent = currentAnchorObj.GetComponent<PatternDisplay>();
+            if (patternDisplayCullent == null)
+            {
+                Debug.LogError("[GameManager] PatternDisplay component not found on 'PatternDisplayCurrentAnchor' GameObject.", currentAnchorObj);
+            }
+        }
+        else
+        {
+            Debug.LogError("[GameManager] 'PatternDisplayCurrentAnchor' GameObject not found in the scene.", this);
+        }
+       
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape)) // 例：スペースキーでゲーム開始
+        {
+            SceneManager.LoadScene("GameOverScene"); // GameScene に切り替え
+        }
+    }
+
+
+
 }
