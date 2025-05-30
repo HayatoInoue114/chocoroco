@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// ゲーム全体を管理
@@ -6,10 +7,8 @@ using UnityEngine;
 /// </summary>
 public class GameManager : MonoBehaviour
 {
-    // シングルトンインスタンス
     public static GameManager instance;
 
-    // 参照できるように変数化
     public GridManager gridManager;
     public SelectionManager selectionManager;
     public PatternManager patternManager;
@@ -18,21 +17,22 @@ public class GameManager : MonoBehaviour
     public PatternDisplay patternDisplayHold;
     public ScoreManager scoreManager;
 
+    // 状態管理用
+    private enum GameState { Title, Playing, GameOver }
+    private GameState currentState;
+
     private void Awake()
     {
         if (instance == null)
         {
             instance = this;
-            // DontDestroyOnLoad(gameObject); // シーンをまたいで GameManager を維持する場合
         }
-        else if (instance != this) // 既に他のインスタンスが存在する場合
+        else if (instance != this)
         {
-            Destroy(gameObject); // このインスタンスを破棄
+            Destroy(gameObject);
             return;
         }
     }
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         bool initializationError = false;
@@ -142,29 +142,18 @@ public class GameManager : MonoBehaviour
         {
             Debug.LogError("[GameManager] 'PatternDisplayCurrentAnchor' GameObject not found in the scene.", this);
         }
-
+       
     }
 
     // Update is called once per frame
     void Update()
     {
-        // gridManager や patternManager が null でないことを確認してからメソッドを呼び出すのがより安全です。
-        // Start()でエラーがあれば、これらの参照がnullのままUpdate()が呼ばれる可能性があるため。
-        if (gridManager != null)
+        if (Input.GetKeyDown(KeyCode.Escape)) // 例：スペースキーでゲーム開始
         {
-            gridManager.ProcessClearedRows();
-        }
-
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            if (patternManager != null)
-            {
-                patternManager.HoldPattern();
-            }
-            else
-            {
-                Debug.LogWarning("[GameManager] PatternManager is not available to hold pattern.", this);
-            }
+            SceneManager.LoadScene("GameOverScene"); // GameScene に切り替え
         }
     }
+
+
+
 }
