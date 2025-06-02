@@ -202,4 +202,45 @@ public class GridManager : MonoBehaviour
 		// 登録
 		grid[x, y] = block;
 	}
+
+	/// <summary>
+	/// 現在のパターンで消せるか
+	/// </summary>
+	/// <returns>消せる : true , 消せない : false</returns>
+	public bool HasValidPattern(Pattern pattern)
+	{
+		for (int x = 0; x < width; x++)
+		{
+			for (int y = 0; y < height; y++)
+			{
+				if (CanMatchPatternAt(x, y, pattern))
+					return true;
+			}
+		}
+		return false;
+	}
+
+
+	/// <summary>
+	/// どこか一つでもパターンが一致するか
+	/// </summary>
+	private bool CanMatchPatternAt(int startX, int startY, Pattern pattern)
+	{
+		foreach (Vector2Int offset in pattern.shape)
+		{
+			int checkX = startX + offset.x;
+			int checkY = startY + offset.y;
+
+			// 範囲外チェック
+			if (checkX < 0 || checkX >= width || checkY < 0 || checkY >= height)
+				return false;
+
+			// ブロックが存在しない or 消されてる
+			if (grid[checkX, checkY].destroyed)
+				return false;
+		}
+		return true;
+	}
+
+
 }

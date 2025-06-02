@@ -14,8 +14,9 @@ public class PatternManager : MonoBehaviour
 	public Pattern nextPattern = null;
 	// ホールド
 	public Pattern holdPattern = null;
-	// ホールドしたかのフラグ
-	public bool IsHeld = false;
+	// 無限にさせるためにコメントアウト
+	//// ホールドしたかのフラグ
+	//public bool IsHeld = false;
 
 	private void Awake()
 	{
@@ -176,18 +177,18 @@ public class PatternManager : MonoBehaviour
 		currentPattern = nextPattern;
 		nextPattern = patterns[rand];
 		// ホールドフラグを戻す
-		IsHeld = false;
+		//IsHeld = false;
 		UpdatePatternDisplay();
 	}
 
 	public void HoldPattern()
 	{
-		if (!IsHeld)
+		//if (!IsHeld)
 		{
 			Pattern ptn = holdPattern;
 			holdPattern = currentPattern;
 			currentPattern = ptn;
-			IsHeld = true;
+			//IsHeld = true;
 			UpdatePatternDisplay();
 		}
 	}
