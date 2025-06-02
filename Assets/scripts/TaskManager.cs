@@ -39,6 +39,10 @@ public class TaskManager : MonoBehaviour
             int needDeleteNum = 5;
 
             task.Initialize(i, needDeleteNum);
+            if(i %2 == 0)
+            {
+                task.color = UnityEngine.Color.blue;
+            }
 
             //PushBack
             tasks_.Add(task);
@@ -73,7 +77,20 @@ public class TaskManager : MonoBehaviour
     {
         if (needText != null)
         {
-            needText.text = "NeedBlock: " + tasks_[nowTaskNum].needBlockNum.ToString() + "\n Color : " + whatColor.ToString();
+            string color = "";
+            if(whatColor == UnityEngine.Color.red)
+            {
+                color = "RED";
+            }
+            if (whatColor == UnityEngine.Color.blue)
+            {
+                color= "BLUE";
+            }
+            if (whatColor == UnityEngine.Color.green)
+            {
+                color = "GREEN";
+            }
+                needText.text = "NeedBlock: " + tasks_[nowTaskNum].needBlockNum.ToString() + "\n Color : " + color;
         }
     }
 }
