@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -8,13 +9,17 @@ using UnityEngine;
 /// </summary>
 public class GridManager : MonoBehaviour
 {
+	public GameObject blockPrefab;
+
+
 	// マップ管理
 	public int width = 8;
 	public int height = 8;
 	// ブロックを入れる
 	private Block[,] grid;
 
-	public GameObject blockPrefab;
+	// ブロックが落ちる処理中
+	public bool isDropping = false;
 
 	// Start is called once before the first execution of Update after the MonoBehaviour is created
 	void Start()
@@ -27,15 +32,19 @@ public class GridManager : MonoBehaviour
 	/// </summary>
 	public void ProcessClearedRows()
 	{
+		if (isDropping)
+		{
+			return;
+		}
 		var clearedRows = GetClearedRows();
 		// 消えている行があるか
 		if (clearedRows.Count == 0)
 			return;
 
-		//Debug.Log("完全に消えた行:" + clearedRows.Count);
-
-		DropBlocks(clearedRows);
-		AddNewTopRow(clearedRows.Count);
+		
+		// 下に落とす処理を実行
+		StartCoroutine(DropBlockRoutine(clearedRows));
+		//DropBlocks(clearedRows);
 	}
 
 	/// <summary>
@@ -242,5 +251,48 @@ public class GridManager : MonoBehaviour
 		return true;
 	}
 
+	IEnumerator DropBlockRoutine(List<int> rows)
+	{
+		// 演出中
+		isDropping = true;
+		// 操作不可能
+		GameManager.instance.selectionManager.isSelectActive = false;
+		// 一行ずつずらす
+		for (int i = 0; i < rows.Count; i++)
+		{
+			// 下に詰めた分消えている行もずらす
+			for (int y = rows[i] + 1 - i; y < height; y++)
+			{
+				for (int x = 0; x < width; x++)
+				{
+					// 下にずらす
+					grid[x, y - 1] = grid[x, y];
+					// 中身があるなら
+					if (grid[x, y - 1] != null)
+					{
+						// 下に移動
+						grid[x, y - 1].transform.position += Vector3.down;
+						grid[x, y - 1].GridPosition += Vector2Int.down;
+					}
+					// 元の位置のものは消す
+					grid[x, y] = null;
+				}
+			}
+			yield return new WaitForSeconds(0.1f);
+		}
+		// 余韻
+		yield return new WaitForSeconds(0.2f);
+
+		// 新しい行を生成
+		AddNewTopRow(rows.Count);
+
+		// 操作可能
+		GameManager.instance.selectionManager.isSelectActive = true;
+		// 演出終了
+		isDropping = false;
+
+		// ゲームオーバーか判定
+		GameManager.instance.CheckGameOver();
+	}
 
 }

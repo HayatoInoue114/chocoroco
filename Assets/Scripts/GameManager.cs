@@ -177,12 +177,8 @@ public class GameManager : MonoBehaviour
 		// ブロックを下におろす処理
 		gridManager.ProcessClearedRows();
 
-
-		// ゲームオーバー科判定
-		CheckGameOver();
-
 	}
-	void CheckGameOver()
+	public void CheckGameOver()
 	{
 		// ホールド含めてまだ消せる状態か
 		if (!gridManager.HasValidPattern(patternManager.currentPattern) &&

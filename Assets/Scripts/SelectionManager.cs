@@ -12,11 +12,16 @@ public class SelectionManager : MonoBehaviour
 	public HashSet<Block> selectedSet = new HashSet<Block>();
 	// クリック中か
 	public bool isSelecting = false;
-
+	// そもそもクリックできるか
+	public bool isSelectActive = true;
 
 	// Update is called once per frame
 	void Update()
 	{
+		if (!isSelectActive)
+		{
+			return;
+		}
 		// クリックした瞬間
 		if (Input.GetMouseButtonDown(0))
 		{
