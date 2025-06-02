@@ -1,7 +1,9 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Numerics;
+using TMPro;
 using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
 
 public class TaskManager : MonoBehaviour
 {
@@ -15,6 +17,9 @@ public class TaskManager : MonoBehaviour
     public int MAXTASKNUMBER = 10;
     //必要数
     public int needNum;
+    [SerializeField] private TMP_Text needText;
+    // 色
+    public UnityEngine.Color whatColor;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public void Start()
@@ -31,7 +36,7 @@ public class TaskManager : MonoBehaviour
         for (int i = 0; i < MAXTASKNUMBER; i++)
         {
             Task task = new Task();
-            int needDeleteNum = 10;
+            int needDeleteNum = 5;
 
             task.Initialize(i, needDeleteNum);
 
@@ -57,8 +62,19 @@ public class TaskManager : MonoBehaviour
 
     public void Update()
     {
-        //必要ブロック数の計算
+        //必要ブロック数と今の色の計算
         needNum = tasks_[nowTaskNum].needBlockNum;
+        whatColor = tasks_[nowTaskNum].color;
+
+        UpdateUI();
+    }
+
+    private void UpdateUI()
+    {
+        if (needText != null)
+        {
+            needText.text = "NeedBlock: " + tasks_[nowTaskNum].needBlockNum.ToString() + "\n Color : " + whatColor.ToString();
+        }
     }
 }
 

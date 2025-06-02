@@ -6,7 +6,7 @@ public class Task : MonoBehaviour
     public int needBlockNum; //必要ブロック数
     public int taskNo; //タスク番号
     public bool isCleared; //クリア状態
-    Color color; //対応カラー
+    public Color color; //対応カラー
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
    public void Initialize(int i, int needNum)
