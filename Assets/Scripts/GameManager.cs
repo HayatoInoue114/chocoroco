@@ -160,6 +160,10 @@ public class GameManager : MonoBehaviour
         {
             SceneManager.LoadScene("GameOverScene"); // GameScene に切り替え
         }
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            patternManager.HoldPattern();
+        }
     }
 
 
