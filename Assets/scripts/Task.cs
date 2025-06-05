@@ -2,11 +2,12 @@ using UnityEngine;
 
 public class Task : MonoBehaviour
 {
-    //•Ï”
-    public int needBlockNum; //•K—vƒuƒƒbƒN”
-    public int taskNo; //ƒ^ƒXƒN”Ô†
-    public bool isCleared; //ƒNƒŠƒAó‘Ô
-    public Color color; //‘Î‰ƒJƒ‰[
+    //å¤‰æ•°
+    public int needBlockNum; //å¿…è¦ãƒ–ãƒ­ãƒƒã‚¯æ•°
+    public int taskNo; //ã‚¿ã‚¹ã‚¯ç•ªå·
+    public bool isCleared; //ã‚¯ãƒªã‚¢çŠ¶æ…‹
+    public Color color; //å¯¾å¿œã‚«ãƒ©ãƒ¼
+    public int score; // é”æˆã—ãŸã¨ãã®ã‚¹ã‚³ã‚¢
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
    public void Initialize(int i, int needNum)
@@ -15,6 +16,7 @@ public class Task : MonoBehaviour
         taskNo = i;
         isCleared = false;
         color = Color.red;
+        score = 5;
     }
 
     // Update is called once per frame
@@ -25,17 +27,24 @@ public class Task : MonoBehaviour
 
     public bool CheckTask(Block deletedBlock)
     {
-        //–Ú“I‚ÌF‚Æ“¯‚¶Block‚ªíœ‚³‚ê‚½‚ç•K—v”‚©‚çŒ¸‚ç‚·
+        // ä¸€å›ã ã‘å‡¦ç†ã•ã›ãŸã„ã‚‚ã®ãŒã‚ã‚‹ã®ã§æ—©æœŸãƒªã‚¿ãƒ¼ãƒ³
+        if (isCleared)
+        {
+            return true;
+        }
+        //ç›®çš„ã®è‰²ã¨åŒã˜BlockãŒå‰Šé™¤ã•ã‚ŒãŸã‚‰å¿…è¦æ•°ã‹ã‚‰æ¸›ã‚‰ã™
         if (deletedBlock.color == color)
         {
             needBlockNum--;
         }
 
-        //•K—v”‰ó‚µ‚½‚çŸ‚Ìƒ^ƒXƒN‚ÖˆÚ“®
+        //å¿…è¦æ•°å£Šã—ãŸã‚‰æ¬¡ã®ã‚¿ã‚¹ã‚¯ã¸ç§»å‹•
         if(needBlockNum <= 0)
         {
-            //ƒNƒŠƒA‚µ‚Ä‚¢‚½‚çTRUE
+            //ã‚¯ãƒªã‚¢ã—ã¦ã„ãŸã‚‰TRUE
             isCleared = true;
+            // ã‚¹ã‚³ã‚¢è¿½åŠ 
+            GameManager.instance.scoreManager.AddScore(score);
             return true;
         }
         return false;

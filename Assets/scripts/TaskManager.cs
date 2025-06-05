@@ -90,7 +90,7 @@ public class TaskManager : MonoBehaviour
             {
                 color = "GREEN";
             }
-                needText.text = "NeedBlock: " + tasks_[nowTaskNum].needBlockNum.ToString() + "\n Color : " + color;
+                needText.text = "NeedBlock: " + tasks_[nowTaskNum].needBlockNum.ToString() + "\nColor : " + color;
         }
     }
 }

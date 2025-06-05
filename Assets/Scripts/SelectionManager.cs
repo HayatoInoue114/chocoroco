@@ -13,7 +13,7 @@ public class SelectionManager : MonoBehaviour
 	// クリック中か
 	public bool isSelecting = false;
 	// そもそもクリックできるか
-	public bool isSelectActive = true;
+	private bool isSelectActive = true;
 
 	// Update is called once per frame
 	void Update()
@@ -148,6 +148,8 @@ public class SelectionManager : MonoBehaviour
 			}
 			return;
 		}
+		/// ここから下はブロックが消されることが確定した処理 ///
+
 
         //ブロック削除をタスクに渡す
         GameManager.instance.taskManager.CheckTask(selectedList);
@@ -162,8 +164,11 @@ public class SelectionManager : MonoBehaviour
 		// 新しくパターンを選ぶ
 		GameManager.instance.patternManager.ChoosePattern();
 
-		// リスト消去
+		StartCoroutine(GameManager.instance.HandleAfterBlockClear());
+
+		// 初期化
 		selectedSet.Clear();
+		// リスト消去
 		selectedList.Clear();
 	}
 
@@ -176,4 +181,23 @@ public class SelectionManager : MonoBehaviour
 		}
 		return traced;
 	}
+
+	/// <summary>
+	/// 選択が可能になる
+	/// </summary>
+	public void EnableSelection()
+	{
+		// 選択可能
+		isSelectActive = true;
+	}
+	
+	/// <summary>
+	/// 選択が不可能になる
+	/// </summary>
+	public void DisableSelection()
+	{
+		// 選択不可能
+		isSelectActive = false;
+	}
+
 }

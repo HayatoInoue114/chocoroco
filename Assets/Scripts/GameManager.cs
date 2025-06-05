@@ -17,6 +17,7 @@ public class GameManager : MonoBehaviour
 	public PatternDisplay patternDisplayNext;
 	public PatternDisplay patternDisplayHold;
 	public ScoreManager scoreManager;
+	public ScreenFader screenFader;
 
 	// 状態管理用
 	private enum GameState { Title, Playing, GameOver }
@@ -122,6 +123,13 @@ public class GameManager : MonoBehaviour
 			Debug.LogError("[GameManager] taskManager component not found on this GameObject. Please attach it in the Inspector.", this);
 			initializationError = true;
 		}
+		
+		screenFader = GetComponent<ScreenFader>();
+		if (screenFader == null)
+		{
+			Debug.LogError("[GameManager] screenFader component not found on this GameObject. Please attach it in the Inspector.", this);
+			initializationError = true;
+		}
 
 		// --- 初期化処理の実行 ---
 		if (initializationError)
@@ -167,7 +175,7 @@ public class GameManager : MonoBehaviour
 
 		if (Input.GetKeyDown(KeyCode.Escape)) // 例：スペースキーでゲーム開始
 		{
-			StartCoroutine(DelayCheck());
+			StartCoroutine(TransitionGameOver());
 		}
 		if (Input.GetKeyDown(KeyCode.Q))
 		{
@@ -178,23 +186,61 @@ public class GameManager : MonoBehaviour
 		gridManager.ProcessClearedRows();
 
 	}
-	public void CheckGameOver()
+	public bool CanEraseWithPatterns()
 	{
 		// ホールド含めてまだ消せる状態か
-		if (!gridManager.HasValidPattern(patternManager.currentPattern) &&
-			!gridManager.HasValidPattern(patternManager.holdPattern))
+		if (gridManager.HasValidPattern(patternManager.currentPattern) ||
+			gridManager.HasValidPattern(patternManager.holdPattern))
 		{
-			// ゲームオーバー演出へ
-			StartCoroutine(DelayCheck());
-			isGameOver = true;
+			isGameOver = false;
+			return true;
 		}
+		isGameOver = true;
+		return false;
 	}
 
-	IEnumerator DelayCheck()
+	IEnumerator TransitionGameOver()
 	{
+		// 操作できないようにする
+		selectionManager.DisableSelection();
 		Debug.Log("[DEBUG] ゲームオーバー！！");
+		// スコアを保存
+		PlayerPrefs.SetInt("Score", scoreManager.score);
+		// 手動保存(一応)
+		PlayerPrefs.Save();
+
+		// ここらへんで演出しても、いい
+		// 1 秒待つ
+		yield return new WaitForSeconds(1f);
+		// 画面を黒くフェードさせる
+		screenFader.FadeTo(new Color(0f, 0f, 0f, 0.8f));  // 黒, 不透明度0.8
+
+		// 2 秒待つ
 		yield return new WaitForSeconds(2f);
+		// シーン移動
 		SceneManager.LoadScene("GameOverScene");
+	}
+
+	/// <summary>
+	/// ゲームオーバーが起きる状況か判断
+	/// </summary>
+	public IEnumerator HandleAfterBlockClear()
+	{
+		// 操作禁止
+		selectionManager.DisableSelection();
+
+		yield return new WaitForSeconds(0.5f);
+
+		// ゲームオーバー判定をここで行う
+		if (!CanEraseWithPatterns())
+		{
+			// ゲームオーバー演出へ
+			StartCoroutine(TransitionGameOver());
+			yield break;
+		}
+
+		// 操作再開
+		selectionManager.EnableSelection();
 	}
 
 }

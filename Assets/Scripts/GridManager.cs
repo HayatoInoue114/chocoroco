@@ -39,9 +39,10 @@ public class GridManager : MonoBehaviour
 		var clearedRows = GetClearedRows();
 		// 消えている行があるか
 		if (clearedRows.Count == 0)
+		{
 			return;
+		}
 
-		
 		// 下に落とす処理を実行
 		StartCoroutine(DropBlockRoutine(clearedRows));
 		//DropBlocks(clearedRows);
@@ -218,14 +219,24 @@ public class GridManager : MonoBehaviour
 	/// <returns>消せる : true , 消せない : false</returns>
 	public bool HasValidPattern(Pattern pattern)
 	{
+		// 演出中なので挽回の余地あり
+		if (isDropping)
+		{
+			return true;
+		}
+
 		for (int x = 0; x < width; x++)
 		{
 			for (int y = 0; y < height; y++)
 			{
 				if (CanMatchPatternAt(x, y, pattern))
+				{
+					Debug.Log(pattern.name + "true");
 					return true;
+				}
 			}
 		}
+		Debug.Log(pattern.name + "false");
 		return false;
 	}
 
@@ -255,8 +266,6 @@ public class GridManager : MonoBehaviour
 	{
 		// 演出中
 		isDropping = true;
-		// 操作不可能
-		GameManager.instance.selectionManager.isSelectActive = false;
 		// 一行ずつずらす
 		for (int i = 0; i < rows.Count; i++)
 		{
@@ -286,13 +295,10 @@ public class GridManager : MonoBehaviour
 		// 新しい行を生成
 		AddNewTopRow(rows.Count);
 
-		// 操作可能
-		GameManager.instance.selectionManager.isSelectActive = true;
 		// 演出終了
 		isDropping = false;
 
-		// ゲームオーバーか判定
-		GameManager.instance.CheckGameOver();
+		GameManager.instance.HandleAfterBlockClear();
 	}
 
 }
