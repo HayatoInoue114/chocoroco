@@ -176,6 +176,7 @@ public class GameManager : MonoBehaviour
 		if (Input.GetKeyDown(KeyCode.Escape)) // 例：スペースキーでゲーム開始
 		{
 			StartCoroutine(TransitionGameOver());
+			isGameOver = true;
 		}
 		if (Input.GetKeyDown(KeyCode.Q))
 		{
