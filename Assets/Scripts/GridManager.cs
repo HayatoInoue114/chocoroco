@@ -30,22 +30,21 @@ public class GridManager : MonoBehaviour
 	/// <summary>
 	/// 消えているラインを検証、処理
 	/// </summary>
-	public void ProcessClearedRows()
+	public IEnumerator ProcessClearedRows()
 	{
 		if (isDropping)
 		{
-			return;
+			yield break;
 		}
 		var clearedRows = GetClearedRows();
 		// 消えている行があるか
 		if (clearedRows.Count == 0)
 		{
-			return;
+			yield break;
 		}
 
 		// 下に落とす処理を実行
-		StartCoroutine(DropBlockRoutine(clearedRows));
-		//DropBlocks(clearedRows);
+		yield return StartCoroutine(DropBlockRoutine(clearedRows));
 	}
 
 	/// <summary>
@@ -287,7 +286,7 @@ public class GridManager : MonoBehaviour
 					grid[x, y] = null;
 				}
 			}
-			yield return new WaitForSeconds(0.1f);
+			yield return new WaitForSeconds(0.5f);
 		}
 		// 余韻
 		yield return new WaitForSeconds(0.2f);
@@ -297,8 +296,6 @@ public class GridManager : MonoBehaviour
 
 		// 演出終了
 		isDropping = false;
-
-		GameManager.instance.HandleAfterBlockClear();
 	}
 
 }
