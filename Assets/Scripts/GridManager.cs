@@ -279,7 +279,7 @@ public class GridManager : MonoBehaviour
 					if (grid[x, y - 1] != null)
 					{
 						// 下に移動
-						grid[x, y - 1].transform.position += Vector3.down;
+						grid[x, y - 1].transform.root.position += Vector3.down;
 						grid[x, y - 1].GridPosition += Vector2Int.down;
 					}
 					// 元の位置のものは消す
