@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -53,8 +54,14 @@ public class SelectionManager : MonoBehaviour
 			isSelecting = false;
 			if (selectedList.Count > 0)
 			{
-				HandleSelection();
+				StartCoroutine(HandleSelection());
 			}
+		}
+
+		// 右クリック
+		if (Input.GetMouseButton(1))
+		{
+			CancelSelection();
 		}
 	}
 
@@ -131,45 +138,78 @@ public class SelectionManager : MonoBehaviour
 	}
 
 	/// <summary>
+	/// 選択を解除
+	/// </summary>
+	private void CancelSelection()
+	{
+		foreach (Block block in selectedList)
+		{
+			block.Unselect();
+		}
+		// 初期化
+		selectedSet.Clear();
+		// リスト消去
+		selectedList.Clear();
+		// フラグ初期化
+		isSelecting = false;
+		// 操作は可能にする
+		EnableSelection();
+	}
+
+	/// <summary>
 	/// 選択し終わった後の処理
 	/// </summary>
-	private void HandleSelection()
+	IEnumerator HandleSelection()
 	{
+		// 操作を不可能に
+		DisableSelection();
+
 		// 用意しているパターンと一致しているか
 		Pattern match = GameManager.instance.patternManager.Match(GetRelativePattern());
 
-        // 一致していない
-        if (match == null)
+		// 一致していない
+		if (match == null)
 		{
-			// 選択を解除
-			foreach (Block block in selectedList)
-			{
-				block.Unselect();
-			}
-			return;
+			// 選択解除
+			CancelSelection();
+			yield break;
 		}
 		/// ここから下はブロックが消されることが確定した処理 ///
+		// 新しくパターンを選ぶ
+		GameManager.instance.patternManager.ChoosePattern();
 
+		Debug.Log("[DEBUG] パターン一致");
 
-        //ブロック削除をタスクに渡す
-        GameManager.instance.taskManager.CheckTask(selectedList);
+		//ブロック削除をタスクに渡す
+		GameManager.instance.taskManager.CheckTask(selectedList);
 
-        // 確定したのでループ
-        foreach (Block b in selectedSet)
+		// 確定したのでループ
+		foreach (Block b in selectedSet)
 		{
 			// リセット（ここは条件によって消したりも可）
 			b.Decision();
 		}
+		Debug.Log("[DEBUG] デストロイ指示");
 
-		// 新しくパターンを選ぶ
-		GameManager.instance.patternManager.ChoosePattern();
+		// すべてのブロックが消えるまで待機
+		yield return StartCoroutine(GameManager.instance.blockManager.WaitUntilAllDestroyed(selectedList));
+		Debug.Log("[DEBUG] ブロックが消えた");
 
-		StartCoroutine(GameManager.instance.HandleAfterBlockClear());
+		// ブロックを下におろす処理
+		yield return StartCoroutine(GameManager.instance.gridManager.ProcessClearedRows());
+		Debug.Log("[DEBUG] 行の処理");
 
 		// 初期化
 		selectedSet.Clear();
 		// リスト消去
 		selectedList.Clear();
+
+		// 操作可能
+		EnableSelection();
+
+		// ゲームオーバーの判定を取る
+		StartCoroutine(GameManager.instance.HandleAfterBlockClear());
+
 	}
 
 	private List<Vector2Int> GetRelativePattern()
@@ -190,7 +230,7 @@ public class SelectionManager : MonoBehaviour
 		// 選択可能
 		isSelectActive = true;
 	}
-	
+
 	/// <summary>
 	/// 選択が不可能になる
 	/// </summary>

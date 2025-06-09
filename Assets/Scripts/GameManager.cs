@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviour
 	public PatternDisplay patternDisplayHold;
 	public ScoreManager scoreManager;
 	public ScreenFader screenFader;
+	public BlockManager blockManager;
 
 	// 状態管理用
 	private enum GameState { Title, Playing, GameOver }
@@ -110,6 +111,7 @@ public class GameManager : MonoBehaviour
 			initializationError = true;
 		}
 
+		// スコアマネージャー
 		scoreManager = GetComponent<ScoreManager>();
 		if (scoreManager == null)
 		{
@@ -117,6 +119,7 @@ public class GameManager : MonoBehaviour
 			initializationError = true;
 		}
 
+		// タスクマネージャー
 		taskManager = GetComponent<TaskManager>();
 		if (taskManager == null)
 		{
@@ -124,10 +127,19 @@ public class GameManager : MonoBehaviour
 			initializationError = true;
 		}
 		
+		// スクリーンをフェード
 		screenFader = GetComponent<ScreenFader>();
 		if (screenFader == null)
 		{
 			Debug.LogError("[GameManager] screenFader component not found on this GameObject. Please attach it in the Inspector.", this);
+			initializationError = true;
+		}
+
+		// ブロックマネージャー
+		blockManager = GetComponent<BlockManager>();
+		if (blockManager == null)
+		{
+			Debug.LogError("[GameManager] blcokManager component not found on this GameObject. Please attach it in the Inspector.", this);
 			initializationError = true;
 		}
 
@@ -176,14 +188,13 @@ public class GameManager : MonoBehaviour
 		if (Input.GetKeyDown(KeyCode.Escape)) // 例：スペースキーでゲーム開始
 		{
 			StartCoroutine(TransitionGameOver());
+			isGameOver = true;
 		}
 		if (Input.GetKeyDown(KeyCode.Q))
 		{
 			patternManager.HoldPattern();
 		}
 
-		// ブロックを下におろす処理
-		gridManager.ProcessClearedRows();
 
 	}
 	public bool CanEraseWithPatterns()
@@ -226,11 +237,6 @@ public class GameManager : MonoBehaviour
 	/// </summary>
 	public IEnumerator HandleAfterBlockClear()
 	{
-		// 操作禁止
-		selectionManager.DisableSelection();
-
-		yield return new WaitForSeconds(0.5f);
-
 		// ゲームオーバー判定をここで行う
 		if (!CanEraseWithPatterns())
 		{
@@ -238,9 +244,6 @@ public class GameManager : MonoBehaviour
 			StartCoroutine(TransitionGameOver());
 			yield break;
 		}
-
-		// 操作再開
-		selectionManager.EnableSelection();
 	}
 
 }
