@@ -22,7 +22,7 @@ public class ScoreManager : MonoBehaviour
 
     private void Start()
     {
-        UpdateUI(); // Å© Ç±Ç±í«â¡ÅI
+        UpdateUI(); // ‚Üê „Åì„ÅìËøΩÂä†ÔºÅ
     }
 
     public void AddScore(int amount)
@@ -35,7 +35,7 @@ public class ScoreManager : MonoBehaviour
     {
         if (scoreText != null)
         {
-            scoreText.text = "Score: " + score.ToString();
+            scoreText.text = "Score\n" + score.ToString();
         }
     }
 
