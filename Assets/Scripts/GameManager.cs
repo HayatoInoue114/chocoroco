@@ -71,12 +71,12 @@ public class GameManager : MonoBehaviour
 			patternDisplayCurrent = currentAnchorObj.GetComponent<PatternDisplay>();
 			if (patternDisplayCurrent == null)
 			{
-				Debug.LogError("[GameManager] PatternDisplay component not found on 'PatternDisplayCurrentAnchor' GameObject.", currentAnchorObj);
+				Debug.LogError("[GameManager] PatternDisplay component not found on 'CurrentPatternGrid' GameObject.", currentAnchorObj);
 			}
 		}
 		else
 		{
-			Debug.LogError("[GameManager] 'PatternDisplayCurrentAnchor' GameObject not found in the scene.", this);
+			Debug.LogError("[GameManager] 'CurrentPatternGrid' GameObject not found in the scene.", this);
 		}
 
 		GameObject nextAnchorObj = GameObject.Find("NextPatternGrid");
@@ -85,13 +85,13 @@ public class GameManager : MonoBehaviour
 			patternDisplayNext = nextAnchorObj.GetComponent<PatternDisplay>();
 			if (patternDisplayNext == null)
 			{
-				Debug.LogError("[GameManager] PatternDisplay component not found on 'PatternDisplayNextAnchor' GameObject.", nextAnchorObj);
+				Debug.LogError("[GameManager] PatternDisplay component not found on 'NextPatternGrid' GameObject.", nextAnchorObj);
 				initializationError = true;
 			}
 		}
 		else
 		{
-			Debug.LogError("[GameManager] 'PatternDisplayNextAnchor' GameObject not found in the scene.", this);
+			Debug.LogError("[GameManager] 'NextPatternGrid' GameObject not found in the scene.", this);
 			initializationError = true;
 		}
 
@@ -101,13 +101,13 @@ public class GameManager : MonoBehaviour
 			patternDisplayHold = holdAnchorObj.GetComponent<PatternDisplay>();
 			if (patternDisplayHold == null)
 			{
-				Debug.LogError("[GameManager] PatternDisplay component not found on 'PatternDisplayHoldAnchor' GameObject.", holdAnchorObj);
+				Debug.LogError("[GameManager] PatternDisplay component not found on 'HoldPatternGrid' GameObject.", holdAnchorObj);
 				initializationError = true;
 			}
 		}
 		else
 		{
-			Debug.LogError("[GameManager] 'PatternDisplayHoldAnchor' GameObject not found in the scene.", this);
+			Debug.LogError("[GameManager] 'HoldPatternGrid' GameObject not found in the scene.", this);
 			initializationError = true;
 		}
 
