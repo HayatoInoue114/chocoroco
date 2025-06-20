@@ -14,8 +14,8 @@ public class GridManager : MonoBehaviour
 	//色付きブロックの確立
 	public int randomPercent = 2;
 
-	// マップ管理
-	public int width = 8;
+    // マップ管理
+    public int width = 8;
 	public int height = 8;
 	// ブロックを入れる
 	private Block[,] grid;
