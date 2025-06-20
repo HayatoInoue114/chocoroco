@@ -11,9 +11,11 @@ public class GridManager : MonoBehaviour
 {
 	public GameObject blockPrefab;
 
+	//色付きブロックの確立
+    public int randomPercent = 2;
 
-	// マップ管理
-	public int width = 8;
+    // マップ管理
+    public int width = 8;
 	public int height = 8;
 	// ブロックを入れる
 	private Block[,] grid;
@@ -179,8 +181,9 @@ public class GridManager : MonoBehaviour
 		}
 
 		// 色をランダムで設定(設定は要調整)
-		// 1/10 で色付き
-		int randColorChance = Random.Range(0, 10);
+		// 1/3 で色付き
+
+		int randColorChance = Random.Range(0, randomPercent);
 		if (randColorChance == 0)
 		{
 			int randColor = Random.Range(0, 3);

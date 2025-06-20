@@ -14,7 +14,8 @@ public class TaskManager : MonoBehaviour
     public int nowTaskNum;
 
     //タスク数
-    public int MAXTASKNUMBER = 10;
+    public int StartTaskNum = 10;
+    public int howManyTaksk = 0;
     //必要数
     public int needNum;
     [SerializeField] private TMP_Text needText;
@@ -33,13 +34,13 @@ public class TaskManager : MonoBehaviour
         tasks_.Clear();
 
         //全タスクの生成
-        for (int i = 0; i < MAXTASKNUMBER; i++)
+        for (int i = 0; i < StartTaskNum; i++)
         {
             Task task = new Task();
             int needDeleteNum = 5;
 
             task.Initialize(i, needDeleteNum);
-            if(i %2 == 0)
+            if (i % 2 == 0)
             {
                 task.color = UnityEngine.Color.blue;
             }
@@ -47,13 +48,16 @@ public class TaskManager : MonoBehaviour
             //PushBack
             tasks_.Add(task);
         }
+        //現在のタスク数
+        howManyTaksk = StartTaskNum;
     }
 
     //現在のタスク進行状況
     public void CheckTask(List<Block> blocks)
     {
         //現在のタスクのクリア状況
-        foreach (Block block in blocks) { 
+        foreach (Block block in blocks)
+        {
             if (tasks_[nowTaskNum].CheckTask(block))
             {
                 //クリアしてたら次のタスクへ
@@ -70,6 +74,11 @@ public class TaskManager : MonoBehaviour
         needNum = tasks_[nowTaskNum].needBlockNum;
         whatColor = tasks_[nowTaskNum].color;
 
+        if(howManyTaksk - 4 == clearedTaskCount)
+        {
+            CreateTask();
+        }
+
         UpdateUI();
     }
 
@@ -78,20 +87,48 @@ public class TaskManager : MonoBehaviour
         if (needText != null)
         {
             string color = "";
-            if(whatColor == UnityEngine.Color.red)
+            if (whatColor == UnityEngine.Color.red)
             {
-                color = "RED";
+                color = "赤";
             }
             if (whatColor == UnityEngine.Color.blue)
             {
-                color= "BLUE";
+                color = "青";
             }
             if (whatColor == UnityEngine.Color.green)
             {
-                color = "GREEN";
+                color = "緑";
             }
-                needText.text = "NeedBlock: " + tasks_[nowTaskNum].needBlockNum.ToString() + "\nColor : " + color;
+            needText.text = "現在のタスク: " + color + "色のブロックを" + tasks_[nowTaskNum].needBlockNum.ToString() + "個消そう！";
         }
     }
-}
 
+    //タスクの生成
+    private void CreateTask()
+    {
+        Task task = new Task();
+        int needDeleteNum = 5;
+
+        task.Initialize(howManyTaksk, needDeleteNum);
+
+        //色をランダムで設定
+        int randColor = Random.Range(0, 2);
+        switch (randColor)
+        {
+            case 0:
+                task.color = UnityEngine.Color.red;
+                break;
+            case 1:
+                task.color = UnityEngine.Color.green;
+                break;
+            case 2:
+                task.color = UnityEngine.Color.blue;
+                break;
+        }
+
+        //PushBack
+        tasks_.Add(task);
+
+        howManyTaksk++;
+    }
+}
