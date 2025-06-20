@@ -1,41 +1,32 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 /// <summary>
 /// パターンを画面上に配置するスクリプト
 /// </summary>
 public class PatternDisplay : MonoBehaviour
 {
-	// 表示用の小ブロックプレハブ
-	public GameObject blockPrefab;
-	// 表示する場所（空の親オブジェクト）
-	public Transform anchor;
+	[SerializeField] private int gridSize = 4; // 4x4を想定
+	[SerializeField] private Image[] blockImages; // 16個分
 
-	// 配置するオブジェクト
-	private List<GameObject> blocks = new();
-
-	/// <summary>
-	/// ブロックを配置してパターンを表示する
-	/// </summary>
-	/// <param name="pattern">配置</param>
-	public void ShowPattern(List<Vector2Int> pattern)
+	public void SetPattern(List<Vector2Int> pattern)
 	{
-		Clear();
+		int gridSize = 4;
+
+		// すべて透明にリセット
+		for (int i = 0; i < blockImages.Length; i++)
+			blockImages[i].color = new Color(1, 1, 1, 0);
+
 		foreach (var pos in pattern)
 		{
-			var go = Instantiate(blockPrefab, anchor);
-			go.transform.localPosition = new Vector3(pos.x, pos.y, 0); // 平面表示
-			blocks.Add(go);
+			int flippedY = (gridSize - 1) - pos.y; // 上下反転
+			int index = flippedY * gridSize + pos.x;
+
+			if (index >= 0 && index < blockImages.Length)
+				blockImages[index].color = Color.white;
 		}
 	}
 
-	/// <summary>
-	/// 表示していたブロックを解放
-	/// </summary>
-	public void Clear()
-	{
-		foreach (var b in blocks)
-			Destroy(b);
-		blocks.Clear();
-	}
 }

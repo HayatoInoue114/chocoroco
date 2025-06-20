@@ -65,7 +65,7 @@ public class GameManager : MonoBehaviour
 			initializationError = true;
 		}
 
-		GameObject currentAnchorObj = GameObject.Find("PatternDisplayCurrentAnchor");
+		GameObject currentAnchorObj = GameObject.Find("CurrentPatternGrid");
 		if (currentAnchorObj != null)
 		{
 			patternDisplayCurrent = currentAnchorObj.GetComponent<PatternDisplay>();
@@ -79,7 +79,7 @@ public class GameManager : MonoBehaviour
 			Debug.LogError("[GameManager] 'PatternDisplayCurrentAnchor' GameObject not found in the scene.", this);
 		}
 
-		GameObject nextAnchorObj = GameObject.Find("PatternDisplayNextAnchor");
+		GameObject nextAnchorObj = GameObject.Find("NextPatternGrid");
 		if (nextAnchorObj != null)
 		{
 			patternDisplayNext = nextAnchorObj.GetComponent<PatternDisplay>();
@@ -95,7 +95,7 @@ public class GameManager : MonoBehaviour
 			initializationError = true;
 		}
 
-		GameObject holdAnchorObj = GameObject.Find("PatternDisplayHoldAnchor");
+		GameObject holdAnchorObj = GameObject.Find("HoldPatternGrid");
 		if (holdAnchorObj != null)
 		{
 			patternDisplayHold = holdAnchorObj.GetComponent<PatternDisplay>();

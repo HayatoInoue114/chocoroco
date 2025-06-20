@@ -161,6 +161,7 @@ public class SelectionManager : MonoBehaviour
 	/// </summary>
 	IEnumerator HandleSelection()
 	{
+		Debug.Log("[DEBUG] 判定開始");
 		// 操作を不可能に
 		DisableSelection();
 
@@ -172,6 +173,7 @@ public class SelectionManager : MonoBehaviour
 		{
 			// 選択解除
 			CancelSelection();
+			Debug.Log("[DEBUG] パターン不一致");
 			yield break;
 		}
 		/// ここから下はブロックが消されることが確定した処理 ///
