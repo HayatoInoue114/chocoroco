@@ -196,9 +196,9 @@ public class PatternManager : MonoBehaviour
 	public void UpdatePatternDisplay()
 	{
 		// 更新
-		GameManager.instance.patternDisplayCurrent.ShowPattern(currentPattern.shape);
-		GameManager.instance.patternDisplayNext.ShowPattern(nextPattern.shape);
-		GameManager.instance.patternDisplayHold.ShowPattern(holdPattern.shape);
+		GameManager.instance.patternDisplayCurrent.SetPattern(currentPattern.shape);
+		GameManager.instance.patternDisplayNext.SetPattern(nextPattern.shape);
+		GameManager.instance.patternDisplayHold.SetPattern(holdPattern.shape);
 		Debug.Log(currentPattern.name);
 	}
 }
