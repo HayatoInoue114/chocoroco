@@ -4,13 +4,23 @@ using UnityEngine;
 
 public class BlockManager : MonoBehaviour
 {
+	// 色は後で微妙に変えるかもしれないのでタイプ判別
+	// ブロックの色
+	public enum BlockType
+	{
+		WHITE,
+		RED,
+		GREEN,
+		BLUE,
+	}
+
 	public IEnumerator WaitUntilAllDestroyed(List<Block> targets)
 	{
-		// ポイントごとに取得
-		List<int> points = new List<int>();
+		// ブロックの色を取得
+		List<BlockType> types = new List<BlockType>();
 		foreach (Block target in targets)
 		{
-			points.Add(target.GetScorePoint());
+			types.Add(target.type);
 		}
 
 		// null になっていない GameObject がある限り待機
@@ -23,11 +33,12 @@ public class BlockManager : MonoBehaviour
 		Debug.Log("すべてのブロックが削除されました");
 
 		// 次の処理があればここに書く（例：行の削除チェックなど）
-		foreach (int point in points)
+		foreach (BlockType type in types)
 		{
+			int score = type == BlockType.WHITE ? 1 : 2;
 			// スコア加算呼び出し
-			ScoreManager.Instance.AddScore(point);
-			Debug.Log("スコア: " + point + " 加算");
+			ScoreManager.Instance.AddScore(score);
+			Debug.Log("スコア: " + score + " 加算");
 		}
 	}
 }

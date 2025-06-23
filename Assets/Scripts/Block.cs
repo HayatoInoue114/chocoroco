@@ -6,6 +6,7 @@ public class Block : MonoBehaviour
 	private bool isSelected = false;
 	public bool destroyed = false;
 	public Color color = Color.white;
+	public BlockManager.BlockType type;
 
 	public void Select()
 	{
@@ -26,12 +27,5 @@ public class Block : MonoBehaviour
 		// 色変更＆エフェクト
 		GetComponent<Renderer>().material.color = color - new Color(0.9f, 0.9f, 0.9f, 1.0f);
 		Destroy(transform.root.gameObject, 0.5f);
-	}
-
-	public int GetScorePoint()
-	{
-		// スコア加算処理
-		int points = (color == Color.white) ? 1 : 2;
-		return points;
 	}
 }

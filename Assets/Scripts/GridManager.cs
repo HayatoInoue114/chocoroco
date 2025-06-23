@@ -12,10 +12,10 @@ public class GridManager : MonoBehaviour
 	public GameObject blockPrefab;
 
 	//色付きブロックの確立
-    public int randomPercent = 2;
+	public int randomPercent = 2;
 
-    // マップ管理
-    public int width = 8;
+	// マップ管理
+	public int width = 8;
 	public int height = 8;
 	// ブロックを入れる
 	private Block[,] grid;
@@ -186,19 +186,27 @@ public class GridManager : MonoBehaviour
 		int randColorChance = Random.Range(0, randomPercent);
 		if (randColorChance == 0)
 		{
+			// 色は三つなので確率三等分
 			int randColor = Random.Range(0, 3);
 			switch (randColor)
 			{
 				case 0:
 					block.color = Color.red;
+					block.type = BlockManager.BlockType.RED;
 					break;
 				case 1:
 					block.color = Color.green;
+					block.type = BlockManager.BlockType.GREEN;
 					break;
 				case 2:
 					block.color = Color.blue;
+					block.type = BlockManager.BlockType.BLUE;
 					break;
 			}
+		}
+		else
+		{
+			block.type = BlockManager.BlockType.WHITE;
 		}
 
 		if (blockRenderer != null)
