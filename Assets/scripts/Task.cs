@@ -45,6 +45,8 @@ public class Task : MonoBehaviour
             isCleared = true;
             // スコア追加
             GameManager.instance.scoreManager.AddScore(score);
+            // タスク完了の報酬を与える
+            GameManager.instance.patternManager.AddTaskBonus();
             return true;
         }
         return false;
