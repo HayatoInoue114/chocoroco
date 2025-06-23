@@ -14,8 +14,8 @@ public class TaskManager : MonoBehaviour
     public int nowTaskNum;
 
     //タスク数
-    public int StartTaskNum = 10;
-    public int howManyTaksk = 0;
+    public int StartTaskNum = 5;
+    public int howManyTasks = 0;
     //必要数
     public int needNum;
     [SerializeField] private TMP_Text needText;
@@ -49,7 +49,7 @@ public class TaskManager : MonoBehaviour
             tasks_.Add(task);
         }
         //現在のタスク数
-        howManyTaksk = StartTaskNum;
+        howManyTasks = StartTaskNum;
     }
 
     //現在のタスク進行状況
@@ -74,7 +74,7 @@ public class TaskManager : MonoBehaviour
         needNum = tasks_[nowTaskNum].needBlockNum;
         whatColor = tasks_[nowTaskNum].color;
 
-        if(howManyTaksk - 4 == clearedTaskCount)
+        if(howManyTasks - 4 == clearedTaskCount)
         {
             CreateTask();
         }
@@ -109,7 +109,7 @@ public class TaskManager : MonoBehaviour
         Task task = new Task();
         int needDeleteNum = 5;
 
-        task.Initialize(howManyTaksk, needDeleteNum);
+        task.Initialize(howManyTasks, needDeleteNum);
 
         //色をランダムで設定
         int randColor = Random.Range(0, 2);
@@ -129,6 +129,6 @@ public class TaskManager : MonoBehaviour
         //PushBack
         tasks_.Add(task);
 
-        howManyTaksk++;
+        howManyTasks++;
     }
 }
