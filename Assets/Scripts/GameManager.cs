@@ -126,7 +126,7 @@ public class GameManager : MonoBehaviour
 			Debug.LogError("[GameManager] taskManager component not found on this GameObject. Please attach it in the Inspector.", this);
 			initializationError = true;
 		}
-		
+
 		// スクリーンをフェード
 		screenFader = GetComponent<ScreenFader>();
 		if (screenFader == null)
@@ -184,21 +184,37 @@ public class GameManager : MonoBehaviour
 		{
 			return;
 		}
-
-		if (Input.GetKeyDown(KeyCode.Escape)) // 例：スペースキーでゲーム開始
+		// エスケープでゲーム終了
+		if (Input.GetKeyDown(KeyCode.Escape))
 		{
 			StartCoroutine(TransitionGameOver());
 			isGameOver = true;
 		}
+		// ホールド
 		if (Input.GetKeyDown(KeyCode.Q))
 		{
 			patternManager.HoldPattern();
 		}
-
-
+		// タスクボーナス
+		if (Input.GetKeyDown(KeyCode.W))
+		{
+			patternManager.UseTaskBonus();
+		}
 	}
+
+	/// <summary>
+	/// パターンを検査して消せる状態か判定する
+	/// </summary>
+	/// <returns></returns>
 	public bool CanEraseWithPatterns()
 	{
+		// タスクボーナスがあるか
+		if (patternManager.taskBonusCount > 0)
+		{
+			isGameOver = false;
+			return true;
+		}
+
 		// ホールド含めてまだ消せる状態か
 		if (gridManager.HasValidPattern(patternManager.currentPattern) ||
 			gridManager.HasValidPattern(patternManager.holdPattern))

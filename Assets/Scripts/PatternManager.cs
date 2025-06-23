@@ -5,7 +5,6 @@ public class PatternManager : MonoBehaviour
 {
 	// パターンを管理
 	public List<Pattern> patterns = new List<Pattern>();
-	// パターンを表示するためのブロック群
 
 	// 今のパターンを持っている
 	// ネクストとかホールドとかのために配列化するかも
@@ -14,9 +13,8 @@ public class PatternManager : MonoBehaviour
 	public Pattern nextPattern = null;
 	// ホールド
 	public Pattern holdPattern = null;
-	// 無限にさせるためにコメントアウト
-	//// ホールドしたかのフラグ
-	//public bool IsHeld = false;
+	// タスク達成の報酬
+	public int taskBonusCount = 0;
 
 	private void Awake()
 	{
@@ -176,23 +174,56 @@ public class PatternManager : MonoBehaviour
 		int rand = Random.Range(0, patterns.Count);
 		currentPattern = nextPattern;
 		nextPattern = patterns[rand];
-		// ホールドフラグを戻す
-		//IsHeld = false;
 		UpdatePatternDisplay();
 	}
 
+	/// <summary>
+	/// パターンを保持
+	/// </summary>
 	public void HoldPattern()
 	{
-		//if (!IsHeld)
+		Pattern ptn = holdPattern;
+		holdPattern = currentPattern;
+		currentPattern = ptn;
+		UpdatePatternDisplay();
+	}
+
+	/// <summary>
+	/// タスク報酬を使用
+	/// </summary>
+	public void UseTaskBonus()
+	{
+		// ボーナスが 1 以上
+		if (taskBonusCount > 0)
 		{
-			Pattern ptn = holdPattern;
-			holdPattern = currentPattern;
-			currentPattern = ptn;
-			//IsHeld = true;
-			UpdatePatternDisplay();
+			// 現在のパターンを変更する
+			ChangeCurrentPattern();
 		}
 	}
 
+	/// <summary>
+	/// 現在のパターンを変更する
+	/// 後々好きなものに変えれる可能性がでてくる
+	/// </summary>
+	private void ChangeCurrentPattern()
+	{
+		// 現在のパターンを 1 ブロックに変更
+		currentPattern = patterns[0];
+		taskBonusCount--;
+		UpdatePatternDisplay();
+	}
+
+	/// <summary>
+	/// タスク報酬を追加
+	/// </summary>
+	public void AddTaskBonus()
+	{
+		taskBonusCount++;
+	}
+
+	/// <summary>
+	/// UI の描画更新
+	/// </summary>
 	public void UpdatePatternDisplay()
 	{
 		// 更新
