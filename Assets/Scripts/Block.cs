@@ -23,12 +23,15 @@ public class Block : MonoBehaviour
 	{
 		destroyed = true;
 
-		// スコア加算処理
-		int points = (color == Color.white) ? 1 : 2;
-		ScoreManager.Instance.AddScore(points); // スコア加算呼び出し
-
 		// 色変更＆エフェクト
 		GetComponent<Renderer>().material.color = color - new Color(0.9f, 0.9f, 0.9f, 1.0f);
 		Destroy(transform.root.gameObject, 0.5f);
+	}
+
+	public int GetScorePoint()
+	{
+		// スコア加算処理
+		int points = (color == Color.white) ? 1 : 2;
+		return points;
 	}
 }
