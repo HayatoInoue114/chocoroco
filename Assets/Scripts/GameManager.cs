@@ -191,7 +191,7 @@ public class GameManager : MonoBehaviour
 			isGameOver = true;
 		}
 		// ホールド
-		if (Input.GetKeyDown(KeyCode.Q))
+		if (Input.GetKeyDown(KeyCode.Space))
 		{
 			patternManager.HoldPattern();
 		}

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class PatternManager : MonoBehaviour
@@ -15,6 +16,12 @@ public class PatternManager : MonoBehaviour
 	public Pattern holdPattern = null;
 	// タスク達成の報酬
 	public int taskBonusCount = 0;
+	// ポイント表示
+	[SerializeField]
+	private TMP_Text pointText;
+	// 操作表示
+	[SerializeField]
+	private TMP_Text operateText;
 
 	private void Awake()
 	{
@@ -25,6 +32,8 @@ public class PatternManager : MonoBehaviour
 		nextPattern = patterns[rand];
 		// ホールドを設定
 		holdPattern = patterns[0];
+		// 操作を灰色に
+		operateText.color = Color.gray;
 	}
 
 	private void LoadPatterns()
@@ -211,6 +220,7 @@ public class PatternManager : MonoBehaviour
 		currentPattern = patterns[0];
 		taskBonusCount--;
 		UpdatePatternDisplay();
+		UpdateTaskBonusPoint();
 	}
 
 	/// <summary>
@@ -219,6 +229,7 @@ public class PatternManager : MonoBehaviour
 	public void AddTaskBonus()
 	{
 		taskBonusCount++;
+		UpdateTaskBonusPoint();
 	}
 
 	/// <summary>
@@ -231,5 +242,28 @@ public class PatternManager : MonoBehaviour
 		GameManager.instance.patternDisplayNext.SetPattern(nextPattern.shape);
 		GameManager.instance.patternDisplayHold.SetPattern(holdPattern.shape);
 		Debug.Log(currentPattern.name);
+	}
+
+	public void UpdateTaskBonusPoint()
+	{
+		string text = "";
+		if (taskBonusCount >= 1000)
+		{
+			text = "999+pt";
+		}
+		else
+		{
+			text = taskBonusCount.ToString() + "pt";
+		}
+		pointText.text = text;
+		if (taskBonusCount > 0)
+		{
+			// 操作を可能に
+			operateText.color = Color.black;
+		}
+		else
+		{
+			operateText.color = Color.gray;
+		}
 	}
 }
