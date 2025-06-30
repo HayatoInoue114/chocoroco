@@ -735,6 +735,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64275262fb102fb4b90178be0a63ac24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  taskBonusCount: 0
 --- !u!114 &148903379
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -755,6 +756,9 @@ MonoBehaviour:
   needNum: 0
   needText: {fileID: 120520943}
   whatColor: {r: 0, g: 0, b: 0, a: 0}
+  nextNeedNum: 0
+  nextNeedText: {fileID: 780386294}
+  nextWhatColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!114 &148903380
 MonoBehaviour:
   m_ObjectHideFlags: 0
