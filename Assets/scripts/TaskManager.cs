@@ -22,6 +22,12 @@ public class TaskManager : MonoBehaviour
     // 色
     public UnityEngine.Color whatColor;
 
+    //必要数
+    public int nextNeedNum;
+    [SerializeField] private TMP_Text nextNeedText;
+    // 色
+    public UnityEngine.Color nextWhatColor;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public void Start()
     {
@@ -29,6 +35,7 @@ public class TaskManager : MonoBehaviour
         nowTaskNum = 0;
         clearedTaskCount = 0;
         needNum = 0;
+        nextNeedNum = 0;
 
         //タスククリア
         tasks_.Clear();
@@ -100,6 +107,27 @@ public class TaskManager : MonoBehaviour
                 color = "緑";
             }
             needText.text = "現在のタスク: " + color + "色のブロックを" + tasks_[nowTaskNum].needBlockNum.ToString() + "個消そう！";
+        }
+
+        //
+        nextWhatColor = tasks_[nowTaskNum+1].color;
+
+        if (nextNeedText != null)
+        {
+            string color = "";
+            if (nextWhatColor == UnityEngine.Color.red)
+            {
+                color = "赤";
+            }
+            if (nextWhatColor == UnityEngine.Color.blue)
+            {
+                color = "青";
+            }
+            if (nextWhatColor == UnityEngine.Color.green)
+            {
+                color = "緑";
+            }
+            nextNeedText.text = "現在のタスク: " + color + "色のブロックを" + tasks_[nowTaskNum+1].needBlockNum.ToString() + "個消そう！";
         }
     }
 
