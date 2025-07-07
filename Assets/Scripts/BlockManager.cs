@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class BlockManager : MonoBehaviour
 {
+
+	public AudioClip destroySE;
+
 	// 色は後で微妙に変えるかもしれないのでタイプ判別
 	// ブロックの色
 	public enum BlockType
@@ -21,6 +24,13 @@ public class BlockManager : MonoBehaviour
 		foreach (Block target in targets)
 		{
 			types.Add(target.type);
+		}
+
+		// 破壊音を再生
+		AudioSource audio = GetComponent<AudioSource>();
+		if (audio != null && destroySE != null)
+		{
+			audio.PlayOneShot(destroySE);
 		}
 
 		// null になっていない GameObject がある限り待機

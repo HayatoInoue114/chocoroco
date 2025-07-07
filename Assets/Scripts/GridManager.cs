@@ -23,6 +23,11 @@ public class GridManager : MonoBehaviour
 	// ブロックが落ちる処理中
 	public bool isDropping = false;
 
+
+	public AudioClip rowClearSE;
+	private AudioSource audioSource;
+
+
 	// Start is called once before the first execution of Update after the MonoBehaviour is created
 	void Start()
 	{
@@ -276,6 +281,13 @@ public class GridManager : MonoBehaviour
 	{
 		// 演出中
 		isDropping = true;
+
+		// 音を鳴らす
+		if (rowClearSE != null && audioSource != null)
+		{
+			audioSource.PlayOneShot(rowClearSE);
+		}
+
 		// 一行ずつずらす
 		for (int i = 0; i < rows.Count; i++)
 		{

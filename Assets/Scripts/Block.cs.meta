@@ -1,2 +1,13 @@
 fileFormatVersion: 2
 guid: 21e6b8f1d80c5804bad65f937012ced8
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - destroySE: {fileID: 8300000, guid: 3d5c9872a4b487647b9bfe89bd69e8f3, type: 3}
+  - selectSE: {fileID: 8300000, guid: 5ab97d03c6795cf4180697eec1c36fa5, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
