@@ -35,6 +35,7 @@ public class TaskManager : MonoBehaviour
         nowTaskNum = 0;
         clearedTaskCount = 0;
         needNum = 0;
+        nextNeedNum = 0;
 
         //タスククリア
         tasks_.Clear();
