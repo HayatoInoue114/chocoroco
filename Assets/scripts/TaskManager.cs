@@ -14,7 +14,7 @@ public class TaskManager : MonoBehaviour
     public int nowTaskNum;
 
     //タスク数
-    public int StartTaskNum = 5;
+    public int StartTaskNum = 10;
     public int howManyTasks = 0;
     //必要数
     public int needNum;
@@ -127,7 +127,7 @@ public class TaskManager : MonoBehaviour
             {
                 color = "緑";
             }
-            nextNeedText.text = "現在のタスク: " + color + "色のブロックを" + tasks_[nowTaskNum + 1].needBlockNum.ToString() + "個消そう！";
+            nextNeedText.text = "次のタスク: " + color + "色のブロックを" + tasks_[nowTaskNum + 1].needBlockNum.ToString() + "個消そう！";
         }
     }
 
