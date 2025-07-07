@@ -127,7 +127,7 @@ public class TaskManager : MonoBehaviour
             {
                 color = "緑";
             }
-            nextNeedText.text = "次のタスク: " + color + "色のブロックを" + tasks_[nowTaskNum + 1].needBlockNum.ToString() + "個消そう！";
+            nextNeedText.text = "次のタスク:\n" + color + "色のブロックを\n" + tasks_[nowTaskNum + 1].needBlockNum.ToString() + "個消そう！";
         }
     }
 
