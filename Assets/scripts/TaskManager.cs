@@ -22,6 +22,12 @@ public class TaskManager : MonoBehaviour
     // 色
     public UnityEngine.Color whatColor;
 
+    //必要数
+    public int nextNeedNum;
+    [SerializeField] private TMP_Text nextNeedText;
+    // 色
+    public UnityEngine.Color nextWhatColor;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public void Start()
     {
