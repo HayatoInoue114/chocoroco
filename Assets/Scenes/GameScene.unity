@@ -701,7 +701,9 @@ MonoBehaviour:
   width: 8
   height: 8
   isDropping: 0
-  rowClearSE: {fileID: 0}
+  rowClearSE: {fileID: 8300000, guid: 9e2560b6f6bd7cc4eb5fac02faef77b9, type: 3}
+  rowDropSE: {fileID: 8300000, guid: 9ebb5938174cf4545bbaa59ded09273b, type: 3}
+  rowCreateSE: {fileID: 8300000, guid: 5acf3256bd1bf31468aee2f586ba513f, type: 3}
 --- !u!114 &148903377
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -816,7 +818,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.503
   m_Pitch: 1
   Loop: 0
   Mute: 0

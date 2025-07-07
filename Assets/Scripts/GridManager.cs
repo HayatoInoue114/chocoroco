@@ -25,6 +25,8 @@ public class GridManager : MonoBehaviour
 
 
 	public AudioClip rowClearSE;
+	public AudioClip rowDropSE;
+	public AudioClip rowCreateSE;
 	private AudioSource audioSource;
 
 
@@ -32,6 +34,7 @@ public class GridManager : MonoBehaviour
 	void Start()
 	{
 		grid = new Block[width, height];
+		audioSource = GetComponent<AudioSource>();
 	}
 
 	/// <summary>
@@ -91,33 +94,6 @@ public class GridManager : MonoBehaviour
 				clearedRows.Add(y);
 		}
 		return clearedRows;
-	}
-	/// <summary>
-	/// 完全に消えている行を無くすように上から下へブロックを移動させる
-	/// </summary>
-	private void DropBlocks(List<int> clearedRows)
-	{
-		for (int i = 0; i < clearedRows.Count; i++)
-		{
-			// 下に詰めた分消えている行もずらす
-			for (int y = clearedRows[i] + 1 - i; y < height; y++)
-			{
-				for (int x = 0; x < width; x++)
-				{
-					// 下にずらす
-					grid[x, y - 1] = grid[x, y];
-					// 中身があるなら
-					if (grid[x, y - 1] != null)
-					{
-						// 下に移動
-						grid[x, y - 1].transform.position += Vector3.down;
-						grid[x, y - 1].GridPosition += Vector2Int.down;
-					}
-					// 元の位置のものは消す
-					grid[x, y] = null;
-				}
-			}
-		}
 	}
 
 	/// <summary>
@@ -287,10 +263,16 @@ public class GridManager : MonoBehaviour
 		{
 			audioSource.PlayOneShot(rowClearSE);
 		}
-
 		// 一行ずつずらす
 		for (int i = 0; i < rows.Count; i++)
 		{
+			yield return new WaitForSeconds(0.3f);
+			// 音を鳴らす
+			if (rowDropSE != null && audioSource != null)
+			{
+				audioSource.PlayOneShot(rowDropSE);
+			}
+			yield return new WaitForSeconds(0.2f);
 			// 下に詰めた分消えている行もずらす
 			for (int y = rows[i] + 1 - i; y < height; y++)
 			{
@@ -309,9 +291,16 @@ public class GridManager : MonoBehaviour
 					grid[x, y] = null;
 				}
 			}
-			yield return new WaitForSeconds(0.5f);
+
 		}
 		// 余韻
+		yield return new WaitForSeconds(0.3f);
+
+		// 音を鳴らす
+		if (rowCreateSE != null && audioSource != null)
+		{
+			audioSource.PlayOneShot(rowCreateSE);
+		}
 		yield return new WaitForSeconds(0.2f);
 
 		// 新しい行を生成

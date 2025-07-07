@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class BlockManager : MonoBehaviour
 {
@@ -41,6 +42,7 @@ public class BlockManager : MonoBehaviour
 
 		// 全部 null ＝消滅済み
 		Debug.Log("すべてのブロックが削除されました");
+
 
 		// 次の処理があればここに書く（例：行の削除チェックなど）
 		foreach (BlockType type in types)
