@@ -158,8 +158,8 @@ MonoBehaviour:
   destroyed: 0
   color: {r: 1, g: 1, b: 1, a: 1}
   type: 0
-  destroySE: {fileID: 8300000, guid: 3d5c9872a4b487647b9bfe89bd69e8f3, type: 3}
   selectSE: {fileID: 8300000, guid: 5ab97d03c6795cf4180697eec1c36fa5, type: 3}
+  destroyEffectPrefab: {fileID: 7099470209019903801, guid: aa93f6955f13bd345ac5e0f72d0e0b15, type: 3}
 --- !u!82 &8663226389040550335
 AudioSource:
   m_ObjectHideFlags: 0
