@@ -1,3 +1,4 @@
+using NUnit.Framework.Constraints;
 using UnityEngine;
 
 public class Block : MonoBehaviour
@@ -10,6 +11,8 @@ public class Block : MonoBehaviour
 
 	public AudioClip selectSE;
 
+	Vector3 growVec = new Vector3(0.08f, 0.08f, 0.0f);
+
 	public void Select()
 	{
 		isSelected = true;
@@ -20,12 +23,14 @@ public class Block : MonoBehaviour
 		{
 			audio.PlayOneShot(selectSE);
 		}
+		transform.localScale = transform.localScale + growVec;
 	}
 
 	public void Unselect()
 	{
 		isSelected = false;
 		GetComponent<Renderer>().material.color = color;
+		transform.localScale = transform.localScale - growVec;
 	}
 
 	public void Decision()

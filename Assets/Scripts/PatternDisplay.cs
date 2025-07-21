@@ -13,7 +13,7 @@ public class PatternDisplay : MonoBehaviour
 
 	public void SetPattern(List<Vector2Int> pattern)
 	{
-		int gridSize = 4;
+		//int gridSize = 4;
 
 		// すべて透明にリセット
 		for (int i = 0; i < blockImages.Length; i++)
