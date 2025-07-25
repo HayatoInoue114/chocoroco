@@ -200,6 +200,13 @@ public class GameManager : MonoBehaviour
 		{
 			patternManager.UseTaskBonus();
 		}
+
+		// チュートリアル表示
+		if (Input.GetKeyDown(KeyCode.T))
+		{ 
+
+		}
+
 	}
 
 	/// <summary>

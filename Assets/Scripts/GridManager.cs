@@ -10,12 +10,13 @@ using UnityEngine;
 public class GridManager : MonoBehaviour
 {
 	public GameObject blockPrefab;
+	public GameObject backblockPrefab;
 
 	//色付きブロックの確立
 	public int randomPercent = 2;
 
-    // マップ管理
-    public int width = 8;
+	// マップ管理
+	public int width = 8;
 	public int height = 8;
 	// ブロックを入れる
 	private Block[,] grid;
@@ -71,6 +72,7 @@ public class GridManager : MonoBehaviour
 			{
 				// ブロック生成
 				CreateAndRegistBlock(x, y);
+				Instantiate(backblockPrefab, new Vector3(x, y, 0.5f), Quaternion.identity);
 			}
 		}
 	}
@@ -259,12 +261,16 @@ public class GridManager : MonoBehaviour
     {
         isDropping = true;
 
-        if (rowClearSE != null && audioSource != null)
+		// 破壊音を生成
+		if (rowClearSE != null && audioSource != null)
         {
             audioSource.PlayOneShot(rowClearSE);
         }
 
-        for (int i = 0; i < rows.Count; i++)
+		// エフェクトが終わるくらいには待機
+		yield return new WaitForSeconds(0.5f);
+
+		for (int i = 0; i < rows.Count; i++)
         {
             int clearedY = rows[i] - i;
 

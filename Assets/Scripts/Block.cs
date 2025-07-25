@@ -1,3 +1,4 @@
+using NUnit.Framework.Constraints;
 using UnityEngine;
 
 public class Block : MonoBehaviour
@@ -17,7 +18,15 @@ public class Block : MonoBehaviour
 	void Awake()
 	{
 		audioSource = GetComponent<AudioSource>();
+		// パーティクルの色をブロックの色にする
+		if (destroyEffectPrefab.GetComponent<ParticleSystem>() != null)
+		{
+			var main = destroyEffectPrefab.GetComponent<ParticleSystem>().main;
+			main.startColor = color;
+		}
 	}
+
+	Vector3 growVec = new Vector3(0.08f, 0.08f, 0.0f);
 
 	public void Select()
 	{
@@ -28,12 +37,14 @@ public class Block : MonoBehaviour
 		{
 			audioSource.PlayOneShot(selectSE);
 		}
+		transform.localScale = transform.localScale + growVec;
 	}
 
 	public void Unselect()
 	{
 		isSelected = false;
 		GetComponent<Renderer>().material.color = color;
+		transform.localScale = transform.localScale - growVec;
 	}
 
 	public void Decision()

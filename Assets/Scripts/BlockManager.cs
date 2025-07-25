@@ -27,12 +27,8 @@ public class BlockManager : MonoBehaviour
 			types.Add(target.type);
 		}
 
-		// 破壊音を再生
-		AudioSource audio = GetComponent<AudioSource>();
-		if (audio != null && destroySE != null)
-		{
-			audio.PlayOneShot(destroySE);
-		}
+		// 選択が確定したときに音を鳴らしたっていい
+		Debug.Log("ブロックの削除を待機中...");
 
 		// null になっていない GameObject がある限り待機
 		while (targets.Exists(go => go != null))
@@ -40,9 +36,16 @@ public class BlockManager : MonoBehaviour
 			yield return null; // 1フレーム待機してまたチェック
 		}
 
+
 		// 全部 null ＝消滅済み
 		Debug.Log("すべてのブロックが削除されました");
 
+		// 破壊音を再生
+		AudioSource audio = GetComponent<AudioSource>();
+		if (audio != null && destroySE != null)
+		{
+			audio.PlayOneShot(destroySE);
+		}
 
 		// 次の処理があればここに書く（例：行の削除チェックなど）
 		foreach (BlockType type in types)
