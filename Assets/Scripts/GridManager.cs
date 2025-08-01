@@ -30,11 +30,11 @@ public class GridManager : MonoBehaviour
 	public AudioClip rowCreateSE;
 	private AudioSource audioSource;
 
-    public GameObject blockDestroyEffect; // ← インスペクターで設定する
+	public GameObject blockDestroyEffect; // ← インスペクターで設定する
 
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+	// Start is called once before the first execution of Update after the MonoBehaviour is created
+	void Start()
 	{
 		grid = new Block[width, height];
 		audioSource = GetComponent<AudioSource>();
@@ -257,74 +257,88 @@ public class GridManager : MonoBehaviour
 		return true;
 	}
 
-    IEnumerator DropBlockRoutine(List<int> rows)
-    {
-        isDropping = true;
+	IEnumerator DropBlockRoutine(List<int> rows)
+	{
+		isDropping = true;
 
-		// 破壊音を生成
+		// 行破壊音を生成
 		if (rowClearSE != null && audioSource != null)
-        {
-            audioSource.PlayOneShot(rowClearSE);
-        }
+		{
+			audioSource.PlayOneShot(rowClearSE);
+		}
+
+		if (rows.Count == 1)
+		{
+			// カメラシェイク
+			CameraShake.Instance.Shake(0.5f, 0.1f, 1.0f);
+		}
+		else
+		{
+			// カメラシェイク
+			CameraShake.Instance.Shake(0.7f, 0.2f, 1.0f);
+		}
 
 		// エフェクトが終わるくらいには待機
-		yield return new WaitForSeconds(0.5f);
+		yield return new WaitForSeconds(0.7f);
 
 		for (int i = 0; i < rows.Count; i++)
-        {
-            int clearedY = rows[i] - i;
+		{
+			int clearedY = rows[i] - i;
 
-            // ① 対象行だけ破壊
-            for (int x = 0; x < width; x++)
-            {
-                Block block = grid[x, clearedY];
-                if (block != null)
-                {
-                    block.Decision(); // ここだけ削除
-                    grid[x, clearedY] = null;
-                }
-            }
+			// ① 対象行だけ破壊
+			for (int x = 0; x < width; x++)
+			{
+				Block block = grid[x, clearedY];
+				if (block != null)
+				{
+					block.Decision(); // ここだけ削除
+					grid[x, clearedY] = null;
+				}
+			}
 
-            yield return new WaitForSeconds(0.3f);
+			yield return new WaitForSeconds(0.3f);
 
-            if (rowDropSE != null && audioSource != null)
-            {
-                audioSource.PlayOneShot(rowDropSE);
-            }
+			if (rowDropSE != null && audioSource != null)
+			{
+				audioSource.PlayOneShot(rowDropSE);
+			}
 
-            yield return new WaitForSeconds(0.2f);
+			yield return new WaitForSeconds(0.2f);
 
-            // ② 上のブロックを詰める（破壊してない）
-            for (int y = clearedY + 1; y < height; y++)
-            {
-                for (int x = 0; x < width; x++)
-                {
-                    Block block = grid[x, y];
-                    grid[x, y - 1] = block;
+			// ② 上のブロックを詰める（破壊してない）
+			for (int y = clearedY + 1; y < height; y++)
+			{
+				for (int x = 0; x < width; x++)
+				{
+					Block block = grid[x, y];
+					grid[x, y - 1] = block;
 
-                    if (block != null)
-                    {
-                        block.transform.position += Vector3.down;
-                        block.GridPosition += Vector2Int.down;
-                    }
+					if (block != null)
+					{
+						block.transform.position += Vector3.down;
+						block.GridPosition += Vector2Int.down;
+					}
 
-                    grid[x, y] = null;
-                }
-            }
-        }
+					grid[x, y] = null;
+				}
+			}
 
-        yield return new WaitForSeconds(0.3f);
+			// カメラシェイク
+			CameraShake.Instance.Shake(0.2f, 0.07f, 1.0f);
+		}
 
-        if (rowCreateSE != null && audioSource != null)
-        {
-            audioSource.PlayOneShot(rowCreateSE);
-        }
-        yield return new WaitForSeconds(0.2f);
+		yield return new WaitForSeconds(0.3f);
 
-        AddNewTopRow(rows.Count);
+		if (rowCreateSE != null && audioSource != null)
+		{
+			audioSource.PlayOneShot(rowCreateSE);
+		}
+		yield return new WaitForSeconds(0.2f);
 
-        isDropping = false;
-    }
+		AddNewTopRow(rows.Count);
+
+		isDropping = false;
+	}
 
 
 }

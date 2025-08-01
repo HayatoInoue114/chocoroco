@@ -68,5 +68,7 @@ public class Block : MonoBehaviour
 			// 180度回転させる場合はQuaternion.Euler(0, 180, 0)を使用
 			GameObject go = Instantiate(destroyEffectPrefab, transform.position, Quaternion.Euler(0, 180, 0));
 		}
+		// カメラシェイク
+		CameraShake.Instance.Shake(0.2f, 0.05f, 1.0f);
 	}
 }
