@@ -23,6 +23,12 @@ public class PatternManager : MonoBehaviour
 	[SerializeField]
 	private TMP_Text operateText;
 
+	public class PatternAndIndex
+	{
+		public Pattern pattern;
+		public int index;
+	}
+
 	private void Awake()
 	{
 		LoadPatterns();
@@ -38,118 +44,135 @@ public class PatternManager : MonoBehaviour
 
 	private void LoadPatterns()
 	{
+		// コスト
+		int cost = 5;
 		// 一文字
-		patterns.Add(new Pattern("天上天下唯我独尊", new List<Vector2Int> {
-			new Vector2Int(0,0)
-		}));
+		patterns.Add(new Pattern("1字", new List<Vector2Int> {
+			new Vector2Int(0,0) }, cost));
 
 		// I字パターン
 		#region I
+		// 2 ブロック
+		cost = 4;
 		patterns.Add(new Pattern("I字2横", new List<Vector2Int> {
 			new Vector2Int(0,0), new Vector2Int(1,0),
-		}));
+		}, cost));
 		patterns.Add(new Pattern("I字2縦", new List<Vector2Int> {
 			new Vector2Int(0,0), new Vector2Int(0,1),
-		}));
+		}, cost));
+		// 3 ブロック
+		cost = 3;
 		patterns.Add(new Pattern("I字3横", new List<Vector2Int> {
 			new Vector2Int(0,0), new Vector2Int(1,0),
 			new Vector2Int(2,0)
-		}));
+		}, cost));
 		patterns.Add(new Pattern("I字3縦", new List<Vector2Int> {
 			new Vector2Int(0,0), new Vector2Int(0,1),
 			new Vector2Int(0,2)
-		}));
+		}, cost));
+		// 4 ブロック
+		cost = 2;
 		patterns.Add(new Pattern("I字4横", new List<Vector2Int> {
 			new Vector2Int(0,0), new Vector2Int(1,0),
 			new Vector2Int(2,0), new Vector2Int(3,0)
-		}));
+		}, cost));
 		patterns.Add(new Pattern("I字4縦", new List<Vector2Int> {
 			new Vector2Int(0,0), new Vector2Int(0,1),
 			new Vector2Int(0,2), new Vector2Int(0,3)
-		}));
+		}, cost));
 		#endregion
 		// L字パターン
 		#region L
+		// 3 ブロック
+		cost = 3;
 		patterns.Add(new Pattern("L字3右上", new List<Vector2Int> {
 			new Vector2Int(0,0), new Vector2Int(0,1),
 			new Vector2Int(1,1)
-		}));
+		}, cost));
 		patterns.Add(new Pattern("L字3右下", new List<Vector2Int> {
 			new Vector2Int(0,1), new Vector2Int(1,1),
 			new Vector2Int(1,0)
-		}));
+		}, cost));
 		patterns.Add(new Pattern("L字3左下", new List<Vector2Int> {
 			new Vector2Int(0,0),new Vector2Int(0,1),
 			new Vector2Int(1,1),
-		}));
+		}, cost));
 		patterns.Add(new Pattern("L字3左上", new List<Vector2Int> {
 			new Vector2Int(0,0), new Vector2Int(1,0),
 			new Vector2Int(0,1)
-		}));
+		}, cost));
+		// 4 ブロック
+		cost = 2;
 		patterns.Add(new Pattern("L字縦右上", new List<Vector2Int> {
 			new Vector2Int(0,0), new Vector2Int(0,1),
 			new Vector2Int(0,2), new Vector2Int(1,2)
-		}));
+		}, cost));
 		patterns.Add(new Pattern("L字横右上", new List<Vector2Int> {
 			new Vector2Int(0,0), new Vector2Int(1,0),
 			new Vector2Int(2,0), new Vector2Int(2,1)
-		}));
+		}, cost));
 		patterns.Add(new Pattern("L字横右下", new List<Vector2Int> {
 			new Vector2Int(0,1), new Vector2Int(1,1),
 			new Vector2Int(2,1), new Vector2Int(2,0)
-		}));
+		}, cost));
 		patterns.Add(new Pattern("L字横左下", new List<Vector2Int> {
 			new Vector2Int(0,1), new Vector2Int(1,1),
 			new Vector2Int(2,1), new Vector2Int(0,0)
-		}));
+		}, cost));
 		patterns.Add(new Pattern("L字横左上", new List<Vector2Int> {
 			new Vector2Int(0,0), new Vector2Int(1,0),
 			new Vector2Int(2,0), new Vector2Int(0,1)
-		}));
+		}, cost));
 		patterns.Add(new Pattern("L字縦右上", new List<Vector2Int> {
 			new Vector2Int(0,0), new Vector2Int(0,1),
 			new Vector2Int(0,2), new Vector2Int(1,2)
-		}));
+		}, cost));
 		patterns.Add(new Pattern("L字縦右下", new List<Vector2Int> {
 			new Vector2Int(0,0), new Vector2Int(0,1),
 			new Vector2Int(0,2), new Vector2Int(1,0)
-		}));
+		}, cost));
 		patterns.Add(new Pattern("L字縦左下", new List<Vector2Int> {
 			new Vector2Int(0,0), new Vector2Int(1,0),
 			new Vector2Int(1,1), new Vector2Int(1,2)
-		}));
+		}, cost));
 		patterns.Add(new Pattern("L字縦左上", new List<Vector2Int> {
 			new Vector2Int(0,2), new Vector2Int(1,0),
 			new Vector2Int(1,1), new Vector2Int(1,2)
-		}));
+		}, cost));
 		#endregion
 		// Z 字パターン
 		#region Z
+		// 4 ブロック
+		cost = 2;
 		patterns.Add(new Pattern("Z字横", new List<Vector2Int> {
 			new Vector2Int(0,1), new Vector2Int(1,1),
-			new Vector2Int(1,0), new Vector2Int(0,2)
-		}));
+			new Vector2Int(1,0), new Vector2Int(2,0)
+		}, cost));
 		patterns.Add(new Pattern("Z字縦", new List<Vector2Int> {
 			new Vector2Int(0,0), new Vector2Int(0,1),
 			new Vector2Int(1,1), new Vector2Int(1,2)
-		}));
+		}, cost));
 		#endregion
 		// S 字パターン
 		#region S
+		// 4 ブロック
+		cost = 2;
 		patterns.Add(new Pattern("S字横", new List<Vector2Int> {
 			new Vector2Int(0,0), new Vector2Int(1,0),
 			new Vector2Int(1,1), new Vector2Int(2,1)
-		}));
+		}, cost));
 		patterns.Add(new Pattern("S字縦", new List<Vector2Int> {
 			new Vector2Int(0,2), new Vector2Int(0,1),
 			new Vector2Int(1,1), new Vector2Int(1,0)
-		}));
+		}, cost));
 		#endregion
 		// O 字パターン
+		// 4 ブロック
+		cost = 1;
 		patterns.Add(new Pattern("O字", new List<Vector2Int> {
 			new Vector2Int(0,0),new Vector2Int(0,1),
 			new Vector2Int(1,1),new Vector2Int(1,0)
-		}));
+		}, cost));
 	}
 
 	/// <summary>
@@ -203,10 +226,15 @@ public class PatternManager : MonoBehaviour
 	public void UseTaskBonus()
 	{
 		// ボーナスが 1 以上
-		if (taskBonusCount > 0)
+		//if (taskBonusCount > 0)
 		{
 			// 現在のパターンを変更する
-			ChangeCurrentPattern();
+			//ChangeCurrentPattern(0); // 0 はデフォルトのパターン
+			GameManager.instance.patternSelectPanel.SetActive(true);
+			// ゲームを一時停止
+			Time.timeScale = 0f;
+			// 操作を不可能に
+			GameManager.instance.selectionManager.DisableSelection();
 		}
 	}
 
@@ -214,11 +242,10 @@ public class PatternManager : MonoBehaviour
 	/// 現在のパターンを変更する
 	/// 後々好きなものに変えれる可能性がでてくる
 	/// </summary>
-	private void ChangeCurrentPattern()
+	public void ChangeCurrentPattern(int index)
 	{
-		// 現在のパターンを 1 ブロックに変更
-		currentPattern = patterns[0];
-		taskBonusCount--;
+		// パターンの変更
+		currentPattern = patterns[index];
 		UpdatePatternDisplay();
 		UpdateTaskBonusPoint();
 	}
@@ -230,6 +257,25 @@ public class PatternManager : MonoBehaviour
 	{
 		taskBonusCount++;
 		UpdateTaskBonusPoint();
+	}
+
+	// 分類されたパターンリストを返す
+	public Dictionary<int, List<PatternAndIndex>> GetPatternsGroupedByBlockCount()
+	{
+		Dictionary<int, List<PatternAndIndex>> grouped = new Dictionary<int, List<PatternAndIndex>>();
+		int index = 0;
+		// パターンをブロック数ごとに分類
+		foreach (Pattern p in patterns)
+		{
+			// ブロック数をキーにして分類
+			int count = p.shape.Count;
+			if (!grouped.ContainsKey(count))
+				grouped[count] = new List<PatternAndIndex>();
+
+			grouped[count].Add(new PatternAndIndex { pattern = p, index = index });
+			index++;
+		}
+		return grouped;
 	}
 
 	/// <summary>

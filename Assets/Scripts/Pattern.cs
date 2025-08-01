@@ -6,16 +6,18 @@ public class Pattern
 {
 	public string name;
 	public List<Vector2Int> shape;
+	public int pointCost;
 
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
 	/// <param name="name">名前</param>
-	/// <param name="shape">形状</param>
-	public Pattern(string name, List<Vector2Int> shape)
+	/// <param shape="shape">形状</param>
+	public Pattern(string name, List<Vector2Int> shape, int cost)
 	{
 		this.name = name;
 		this.shape = shape;
+		this.pointCost = cost;
 	}
 
 	/// <summary>

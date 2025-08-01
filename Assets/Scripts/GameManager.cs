@@ -19,6 +19,8 @@ public class GameManager : MonoBehaviour
 	public ScoreManager scoreManager;
 	public ScreenFader screenFader;
 	public BlockManager blockManager;
+	public PatternUIBuilder patternUIBuilder;
+	public GameObject patternSelectPanel;
 
 	// 状態管理用
 	private enum GameState { Title, Playing, GameOver }
@@ -143,6 +145,25 @@ public class GameManager : MonoBehaviour
 			initializationError = true;
 		}
 
+		// パターンセレクトパネル
+		patternSelectPanel = GameObject.Find("PatternSelectPanel");
+		if (patternSelectPanel == null)
+		{
+			Debug.LogError("[GameManager] 'PatternSelectPanel' GameObject not found in the scene. Please ensure it exists.", this);
+			initializationError = true;
+		}
+		else
+		{
+			patternSelectPanel.SetActive(false); // 初期状態では非表示
+		}
+
+		// パターンUIビルダー
+		patternUIBuilder = GetComponent<PatternUIBuilder>();
+		if (patternUIBuilder == null)
+		{
+			Debug.LogError("[GameManager] patternUIBuilder component not found on this GameObject. Please attach it in the Inspector.", this);
+			initializationError = true;
+		}
 		// --- 初期化処理の実行 ---
 		if (initializationError)
 		{
@@ -151,6 +172,8 @@ public class GameManager : MonoBehaviour
 			// enabled = false; // GameManagerのUpdateを停止するなど
 			return;
 		}
+		// パターンUIの初期化
+		patternUIBuilder.Initializ();
 
 		// 必須コンポーネントが取得できた場合のみ実行
 		if (gridManager != null)
@@ -203,7 +226,7 @@ public class GameManager : MonoBehaviour
 
 		// チュートリアル表示
 		if (Input.GetKeyDown(KeyCode.T))
-		{ 
+		{
 
 		}
 
