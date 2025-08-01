@@ -146,7 +146,7 @@ public class GameManager : MonoBehaviour
 		}
 
 		// パターンセレクトパネル
-		patternSelectPanel = GameObject.Find("PatternSelectPanel");
+		//patternSelectPanel = GameObject.Find("PatternSelectPanel");
 		if (patternSelectPanel == null)
 		{
 			Debug.LogError("[GameManager] 'PatternSelectPanel' GameObject not found in the scene. Please ensure it exists.", this);
