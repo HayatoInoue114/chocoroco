@@ -23,6 +23,12 @@ public class PatternManager : MonoBehaviour
 	[SerializeField]
 	private TMP_Text operateText;
 
+	// パターン変更音
+	[SerializeField]
+	private AudioClip changePatternSound;
+
+	private AudioSource audioSource;
+
 	public class PatternAndIndex
 	{
 		public Pattern pattern;
@@ -40,6 +46,8 @@ public class PatternManager : MonoBehaviour
 		holdPattern = patterns[0];
 		// 操作を灰色に
 		operateText.color = Color.gray;
+		
+		audioSource = GameManager.instance.GetComponent<AudioSource>();
 	}
 
 	private void LoadPatterns()
@@ -214,6 +222,7 @@ public class PatternManager : MonoBehaviour
 	/// </summary>
 	public void HoldPattern()
 	{
+		audioSource.PlayOneShot(changePatternSound);
 		Pattern ptn = holdPattern;
 		holdPattern = currentPattern;
 		currentPattern = ptn;
@@ -244,6 +253,7 @@ public class PatternManager : MonoBehaviour
 	/// </summary>
 	public void ChangeCurrentPattern(int index)
 	{
+		audioSource.PlayOneShot(changePatternSound);
 		// パターンの変更
 		currentPattern = patterns[index];
 		UpdatePatternDisplay();
@@ -276,6 +286,37 @@ public class PatternManager : MonoBehaviour
 			index++;
 		}
 		return grouped;
+	}
+
+	// 今のマップの中で消せるパターンを検索し、
+	// そのパターンを交換できるか検証する
+	public bool CanEraseChangePattern()
+	{
+		// タスクボーナスがあるか
+		if (taskBonusCount < 0)
+		{
+			return false;
+		}
+		// すべてのパターンを検証
+		foreach (Pattern p in patterns)
+		{
+			if (p.pointCost > taskBonusCount)
+			{
+				continue; // コストが足りないのでスキップ
+			}
+			// 現在のパターンと検証
+			if (p.Matches(currentPattern.shape))
+			{
+				continue; // 現在のパターンと同じなのでスキップ
+			}
+			// パターンが消せるか検証
+			if (GameManager.instance.gridManager.HasValidPattern(p))
+			{
+				// パターンが消せるので交換可能
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/// <summary>

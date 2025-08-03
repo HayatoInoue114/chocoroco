@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -6,12 +7,18 @@ public class WindowScript : MonoBehaviour
 	public GameObject panel;
 	public Button functionButton;
 	public Button closeButton;
+	private AudioSource audioSource;
+	[SerializeField]
+	private AudioClip closeClip;
+	[SerializeField]
+	private AudioClip nextClip;
 
 	void Start()
 	{
 		if (panel)
 			// 最初は非表示
 			panel.SetActive(false);
+		audioSource = GameManager.instance.GetComponent<AudioSource>();
 
 		// 閉じるボタンがあれば設定
 		closeButton.onClick.AddListener(Close);
@@ -22,6 +29,8 @@ public class WindowScript : MonoBehaviour
 
 	void OnButton()
 	{
+		StartCoroutine(PlaySE(nextClip));
+
 		// 自分のパネルは非表示
 		gameObject.SetActive(false);
 
@@ -42,10 +51,18 @@ public class WindowScript : MonoBehaviour
 
 	void Close()
 	{
+		StartCoroutine(PlaySE(closeClip));
+
 		// 自分のパネルは非表示
 		gameObject.SetActive(false);
 		// ゲーム再開
 		Time.timeScale = 1f;
 		GameManager.instance.selectionManager.EnableSelection();
+	}
+
+	private IEnumerator PlaySE(AudioClip clip)
+	{
+		audioSource.PlayOneShot(clip);
+		yield return new WaitForSeconds(clip.length);
 	}
 }

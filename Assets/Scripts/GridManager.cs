@@ -26,6 +26,7 @@ public class GridManager : MonoBehaviour
 
 
 	public AudioClip rowClearSE;
+	public AudioClip rowClearExSE;
 	public AudioClip rowDropSE;
 	public AudioClip rowCreateSE;
 	private AudioSource audioSource;
@@ -261,19 +262,24 @@ public class GridManager : MonoBehaviour
 	{
 		isDropping = true;
 
-		// 行破壊音を生成
-		if (rowClearSE != null && audioSource != null)
-		{
-			audioSource.PlayOneShot(rowClearSE);
-		}
 
 		if (rows.Count == 1)
 		{
+			// 行破壊音を生成
+			if (rowClearSE != null && audioSource != null)
+			{
+				audioSource.PlayOneShot(rowClearSE);
+			}
 			// カメラシェイク
 			CameraShake.Instance.Shake(0.5f, 0.1f, 1.0f);
 		}
 		else
 		{
+			// 行破壊音を生成
+			if (rowClearExSE != null && audioSource != null)
+			{
+				audioSource.PlayOneShot(rowClearExSE);
+			}
 			// カメラシェイク
 			CameraShake.Instance.Shake(0.7f, 0.2f, 1.0f);
 		}

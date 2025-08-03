@@ -157,6 +157,7 @@ public class GameManager : MonoBehaviour
 			patternSelectPanel.SetActive(false); // 初期状態では非表示
 		}
 
+
 		// パターンUIビルダー
 		patternUIBuilder = GetComponent<PatternUIBuilder>();
 		if (patternUIBuilder == null)
@@ -213,6 +214,10 @@ public class GameManager : MonoBehaviour
 			StartCoroutine(TransitionGameOver());
 			isGameOver = true;
 		}
+		if (Time.timeScale == 0.0f)
+		{
+			return;
+		}
 		// ホールド
 		if (Input.GetKeyDown(KeyCode.Space))
 		{
@@ -223,13 +228,6 @@ public class GameManager : MonoBehaviour
 		{
 			patternManager.UseTaskBonus();
 		}
-
-		// チュートリアル表示
-		if (Input.GetKeyDown(KeyCode.T))
-		{
-
-		}
-
 	}
 
 	/// <summary>
@@ -238,22 +236,21 @@ public class GameManager : MonoBehaviour
 	/// <returns></returns>
 	public bool CanEraseWithPatterns()
 	{
-		// タスクボーナスがあるか
-		if (patternManager.taskBonusCount > 0)
-		{
-			isGameOver = false;
-			return true;
-		}
-
 		// ホールド含めてまだ消せる状態か
 		if (gridManager.HasValidPattern(patternManager.currentPattern) ||
 			gridManager.HasValidPattern(patternManager.holdPattern))
 		{
 			isGameOver = false;
-			return true;
+			return true; // ゲームオーバーではない
+		}
+		// コストを使ったパターンで消せるか
+		if (patternManager.CanEraseChangePattern())
+		{
+			isGameOver = false;
+			return true; // ゲームオーバーではない
 		}
 		isGameOver = true;
-		return false;
+		return false; // ゲームオーバー
 	}
 
 	IEnumerator TransitionGameOver()

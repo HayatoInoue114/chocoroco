@@ -31,7 +31,7 @@ public class Block : MonoBehaviour
 	public void Select()
 	{
 		isSelected = true;
-		GetComponent<Renderer>().material.color = color * 0.8f;
+		GetComponent<Renderer>().material.color = color * 0.6f;
 
 		if (audioSource != null && selectSE != null)
 		{

@@ -66,7 +66,4 @@ public class PatternUIBuilder : MonoBehaviour
 			index++;
 		}
 	}
-	void TrySelectPattern(Pattern pattern)
-	{
-	}
 }
