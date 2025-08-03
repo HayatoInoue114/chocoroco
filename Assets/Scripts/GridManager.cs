@@ -57,6 +57,20 @@ public class GridManager : MonoBehaviour
 			yield break;
 		}
 
+		// 消えた行分スコアを増やす
+		// 一度に消した行ごとにプラス
+		int score = clearedRows.Count * 10;
+		// 例：行数に応じてスコアを増やす（調整可能）
+		float multi = 1.0f;
+		if(clearedRows.Count > 1) // 2行以上消えた場合
+		{
+			multi = 1 + clearedRows.Count / 4.0f; // 行数に応じてスコアを増やす
+		}
+		score = Mathf.RoundToInt(score * multi);
+
+		// スコアを加算
+		GameManager.instance.scoreManager.AddScore(score);
+
 		// 下に落とす処理を実行
 		yield return StartCoroutine(DropBlockRoutine(clearedRows));
 	}

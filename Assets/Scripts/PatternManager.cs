@@ -94,27 +94,27 @@ public class PatternManager : MonoBehaviour
 		// 3 ブロック
 		cost = 3;
 		patterns.Add(new Pattern("L字3右上", new List<Vector2Int> {
-			new Vector2Int(0,0), new Vector2Int(0,1),
+			new Vector2Int(1,0), new Vector2Int(0,1),
 			new Vector2Int(1,1)
 		}, cost));
 		patterns.Add(new Pattern("L字3右下", new List<Vector2Int> {
 			new Vector2Int(0,1), new Vector2Int(1,1),
-			new Vector2Int(1,0)
+			new Vector2Int(0,0)
 		}, cost));
 		patterns.Add(new Pattern("L字3左下", new List<Vector2Int> {
 			new Vector2Int(0,0),new Vector2Int(0,1),
-			new Vector2Int(1,1),
+			new Vector2Int(1,0),
 		}, cost));
 		patterns.Add(new Pattern("L字3左上", new List<Vector2Int> {
 			new Vector2Int(0,0), new Vector2Int(1,0),
-			new Vector2Int(0,1)
+			new Vector2Int(1,1)
 		}, cost));
 		// 4 ブロック
 		cost = 2;
-		patterns.Add(new Pattern("L字縦右上", new List<Vector2Int> {
-			new Vector2Int(0,0), new Vector2Int(0,1),
-			new Vector2Int(0,2), new Vector2Int(1,2)
-		}, cost));
+		//patterns.Add(new Pattern("L字縦右上", new List<Vector2Int> {
+		//	new Vector2Int(0,0), new Vector2Int(0,1),
+		//	new Vector2Int(0,2), new Vector2Int(1,2)
+		//}, cost));
 		patterns.Add(new Pattern("L字横右上", new List<Vector2Int> {
 			new Vector2Int(0,0), new Vector2Int(1,0),
 			new Vector2Int(2,0), new Vector2Int(2,1)
